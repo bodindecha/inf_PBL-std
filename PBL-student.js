@@ -152,7 +152,7 @@ const PBL = (function(d) {
             }
         }
     }, helpCentre = function(type = null) {
-        if (type == null) app.ui.lightbox.open("mid", {title: "ความช่วยเหลือ", allowclose: true, autoclose: 60000, html: document.querySelector("main > .manual[hidden]").innerHTML});
+        if (type == null) app.ui.lightbox.open("mid", {title: "ความช่วยเหลือ", allowclose: true, autoclose: 60000, html: d.querySelector("main > .manual[hidden]").innerHTML});
         else {
             switch (type) {
                 case "document": app.ui.notify(1, [2, "Help: Manual document is currently unavailable."]); break;
@@ -463,7 +463,7 @@ const PBL = (function(d) {
                     $('main .page[path="group/members"] .settings').fadeIn();
                     $('main .page[path="group/members"] .settings [onClick^="PBL.save.settings"]').attr("disabled", "");
                     // Lookup each
-                    document.querySelector('main .page[path="group/members"] .settings [name="statusOpen"]').checked = (dat.settings["statusOpen"] == "Y");
+                    d.querySelector('main .page[path="group/members"] .settings [name="statusOpen"]').checked = (dat.settings["statusOpen"] == "Y");
                 } else $('main .page[path="group/members"] .settings').fadeOut();
             }
         });
@@ -499,7 +499,7 @@ const PBL = (function(d) {
         if (typeof sv.groupSettings[settingName] === "undefined") app.ui.notify(1, [3, "Setting not found."]);
         else {
             var newValue = (function(getName) {
-                if (getName == "statusOpen") return (document.querySelector('main .page[path="group/members"] .settings [name="statusOpen"]').checked ? "Y" : "N");
+                if (getName == "statusOpen") return (d.querySelector('main .page[path="group/members"] .settings [name="statusOpen"]').checked ? "Y" : "N");
                 return [null];
             }(settingName)),
                 button = $('main .page[path="group/members"] .settings [onClick="PBL.save.settings(\''+settingName+'\')"]');
@@ -531,7 +531,7 @@ const PBL = (function(d) {
         await ajax(cv.API_URL+"status", {type: "get", act: "fileLink", param: type}).then(function(dat) {
             if (typeof dat.isGrouped !== "undefined" && !dat.isGrouped) initialRender([null, null, 0]); else
             if (dat.download) {
-                document.querySelector('main iframe[name="dlframe"]').src = dat.download;
+                d.querySelector('main iframe[name="dlframe"]').src = dat.download;
                 setTimeout(function() { button.removeAttr("disabled"); }, 5000);
             } else {
                 button.removeAttr("disabled");

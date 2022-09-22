@@ -30,58 +30,56 @@
             main p { margin: 0 0 10px; }
 		</style>
         <link rel="stylesheet" href="/s/PBL/v2/components.min.css" />
-		<link rel="stylesheet" href="/resource/css/extend/all-PBL.css">
+		<link rel="stylesheet" href="/resource/css/extend/all-PBL.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<script type="text/javascript">
 			$(document).ready(function() {
                 PBL.init();
             });
             top.USER = "<?=$_SESSION['auth']['user']?>";
-            const pUI = (function() {
-                return {
-                    select: {
-                        advisor: function(no) {
-                            let ai = no.toString(), exc = "", exclude = [
-                                document.querySelector('input[name="adv1"]').value,
-                                document.querySelector('input[name="adv2"]').value,
-                                document.querySelector('input[name="adv3"]').value
-                            ]; if (exclude[0] != "") exc += exclude [0]; 
-                            if (exclude[1] != "") exc += (exc == "" ? "" : ",") + exclude[1];
-                            if (exclude[2] != "") exc += (exc == "" ? "" : ",") + exclude[2];
-                            fst.start("เลือกครูที่ปรึกษาโครงงานคนที่ "+ai, 'input[name="adv'+ai+'"]', 'input[name="adv'+ai+'"] + input[readonly]', exc);
+            const pUI = {
+                select: {
+                    advisor: function(no) {
+                        let ai = no.toString(), exc = "", exclude = [
+                            document.querySelector('input[name="adv1"]').value,
+                            document.querySelector('input[name="adv2"]').value,
+                            document.querySelector('input[name="adv3"]').value
+                        ]; if (exclude[0] != "") exc += exclude [0]; 
+                        if (exclude[1] != "") exc += (exc == "" ? "" : ",") + exclude[1];
+                        if (exclude[2] != "") exc += (exc == "" ? "" : ",") + exclude[2];
+                        fst.start("เลือกครูที่ปรึกษาโครงงานคนที่ "+ai, 'input[name="adv'+ai+'"]', 'input[name="adv'+ai+'"] + input[readonly]', exc);
 
-                        }
-                    }, show: {
-                        ungrouped: function() {
-                            app.ui.lightbox.open("top", {title: "เพื่อนที่ยังไม่มีกลุ่ม", allowclose: true, html: '<iframe src="/resource/php/std-list?mode=PBL_no-group&grade=<?=$_SESSION['auth']['info']['grade']?>&room=<?=$_SESSION['auth']['info']['room']?>" style="width:90vw;height:80vh;border:none">Loading...</iframe>'});
-                        }, code: function() {
-                            var button = $('main .page[path="group/members"] .action button:nth-child(1)');
-                            if ($('main .page[path="group/members"] .code .expand').toggleClass("emphasize").is(".emphasize")) {
-                                button.children().first().text("fullscreen_exit");
-                                button.attr("data-title", "ย่อโค้ด");
-                            } else {
-                                button.children().first().text("fullscreen");
-                                button.attr("data-title", "ขยายโค้ด");
-                            }
-                        }, QRcode: function() {
-                            var url = location.hostname+location.pathname+"#/group/join/"+PBL.groupCode();
-                            app.ui.lightbox.open("top", {allowclose: true, autoclose: 60000, title: "QRcode เข้าร่วมกลุ่ม IS/PBL", html: '<img width="325" height="325" src="/resource/images/QRcode?url='+encodeURIComponent(url)+'" draggable="false" /><center>'+PBL.groupCode()+'</center>'});
-                        }
-                    }, form: {
-                        validate: function() {
-                            $('main .page[path="group/members"] .settings > *:focus-within button').removeAttr("disabled");
-                        },
-                        btnState: function() {
-                            PBL.btnAction.unfreeze();
-                        }
-                    }, copy: function(type) {
-                        switch (type) {
-                            case "code": app.io.copy.content(PBL.groupCode()); break;
-                            case "link": app.io.copy.content("https://"+location.hostname+location.pathname+"#/group/join/"+PBL.groupCode()); break;
-                        }
                     }
-                };
-            }());
+                }, show: {
+                    ungrouped: function() {
+                        app.ui.lightbox.open("top", {title: "เพื่อนที่ยังไม่มีกลุ่ม", allowclose: true, html: '<iframe src="/resource/php/std-list?mode=PBL_no-group&grade=<?=$_SESSION['auth']['info']['grade']?>&room=<?=$_SESSION['auth']['info']['room']?>" style="width:90vw;height:80vh;border:none">Loading...</iframe>'});
+                    }, code: function() {
+                        var button = $('main .page[path="group/members"] .action button:nth-child(1)');
+                        if ($('main .page[path="group/members"] .code .expand').toggleClass("emphasize").is(".emphasize")) {
+                            button.children().first().text("fullscreen_exit");
+                            button.attr("data-title", "ย่อโค้ด");
+                        } else {
+                            button.children().first().text("fullscreen");
+                            button.attr("data-title", "ขยายโค้ด");
+                        }
+                    }, QRcode: function() {
+                        var url = location.hostname+location.pathname+"#/group/join/"+PBL.groupCode();
+                        app.ui.lightbox.open("top", {allowclose: true, autoclose: 60000, title: "QRcode เข้าร่วมกลุ่ม IS/PBL", html: '<img width="325" height="325" src="/resource/images/QRcode?url='+encodeURIComponent(url)+'" draggable="false" /><center>'+PBL.groupCode()+'</center>'});
+                    }
+                }, form: {
+                    validate: function() {
+                        $('main .page[path="group/members"] .settings > *:focus-within button').removeAttr("disabled");
+                    },
+                    btnState: function() {
+                        PBL.btnAction.unfreeze();
+                    }
+                }, copy: function(type) {
+                    switch (type) {
+                        case "code": app.io.copy.content(PBL.groupCode()); break;
+                        case "link": app.io.copy.content("https://"+location.hostname+location.pathname+"#/group/join/"+PBL.groupCode()); break;
+                    }
+                }
+            };
             const validate_field = pUI.form.btnState;
 		</script>
 		<script type="text/javascript" src="/s/PBL/v2/PBL-student.min.js"></script>
