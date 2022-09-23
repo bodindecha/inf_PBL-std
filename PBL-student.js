@@ -149,6 +149,7 @@ const PBL = (function(d) {
             if (sv.button_freeze) {
                 $("main .pages .page.current button, main .tab-selector").removeAttr("disabled");
                 sv.button_freeze = false;
+                if (sv.current["page"] == "group/information") app.io.confirm("leave");
             }
         }
     }, helpCentre = function(type = null) {
@@ -437,6 +438,7 @@ const PBL = (function(d) {
                     }
                 }).then(btnAction.unfreeze).then(function() {
                     $("main .pages .page.current button").attr("disabled", "");
+                    $(window).off("beforeunload");
                 });
             }
         }()); return false;
@@ -581,6 +583,7 @@ const PBL = (function(d) {
         }, // Export Internal
         btnAction,
         groupCode: () => sv.code,
+        // pageURL: () => sv.current["page"],
         uploadType: () => sv.current["workType"]
     };
 }(document)); top.PBL = PBL;
