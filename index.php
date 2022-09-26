@@ -28,6 +28,25 @@
                 border-radius: 10px;
             }
             main p { margin: 0 0 10px; }
+            /* Notify-js customizer */
+            .notifyjs-PBL-unsaved-base {
+                width: 300px;
+                background-color: #FCF8E3;
+                border: 1px solid #FBEED5; border-radius: 5px;
+            }
+            .notifyjs-PBL-unsaved-base .title {
+                padding: 5px;
+                text-shadow: 0 1px 0 rgb(255 255 255 / 50%);
+                text-align: center; white-space: nowrap;
+            }
+            .notifyjs-PBL-unsaved-base .form {
+                padding: 2.5px 5px 5px;
+                justify-content: center; flex-wrap: nowrap !important;
+            }
+            .notifyjs-PBL-unsaved-base button {
+                padding: 0 5px;
+                font-size: medium; white-space: nowrap;
+            }
 		</style>
         <link rel="stylesheet" href="/s/PBL/v2/components.min.css" />
 		<link rel="stylesheet" href="/resource/css/extend/all-PBL.css" />
@@ -69,6 +88,7 @@
                 }, form: {
                     validate: function() {
                         $('main .page[path="group/members"] .settings > *:focus-within button').removeAttr("disabled");
+                        PBL.setState("loadSettingsOver", false); PBL.confirmLeave(PBL.pageURL());
                     },
                     btnState: function() {
                         PBL.btnAction.unfreeze();
@@ -86,6 +106,7 @@
 		<script type="text/javascript" src="/resource/js/extend/all-PBL.js"></script>
 		<script type="text/javascript" src="/resource/js/extend/fs-teacher.js"></script>
 		<script type="text/javascript" src="/resource/js/lib/print.min.js"></script>
+		<script type="text/javascript" src="/resource/js/lib/notify.min.js"></script>
 	</head>
 	<body>
 		<?php require($dirPWroot."resource/hpe/header.php"); ?>

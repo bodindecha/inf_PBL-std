@@ -139,6 +139,13 @@
                 </div>
                 <button onClick="PBL.save.settings('statusOpen')" class="blue hollow">Apply</button>
             </div>
+            <div class="group split">
+                <div class="group">
+                    <input type="checkbox" name="publishWork" id="ref_publishing" class="switch v2 emphasize">
+                    <label for="ref_publishing">เผยแพร่โครงงาน</label>
+                </div>
+                <button onClick="PBL.save.settings('publishWork')" class="blue hollow">Apply</button>
+            </div>
         </div>
     </div>
     <div class="page" path="file/documents">

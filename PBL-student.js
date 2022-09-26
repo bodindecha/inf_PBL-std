@@ -125,12 +125,16 @@ const PBL = (function(d) {
             "report-all": "รวมเล่มรายงานโครงงาน (ฉบับเต็ม)",
             "abstract": "บทคัดย่อโครงงาน",
             "poster": "โปสเตอร์"
-        }
+        }, mbr_settings: ["statusOpen", "publishWork"]
     };
     var sv = {
         started: false, HTML: {}, current: {
             page: "", workType: "",
-        }, button_freeze: false
+        }, state: { button_freeze: false,
+            loadInfoOver: true, loadSettingsOver: true
+        }, notifyJsInited: false, history: {
+            unsavedPage: []
+        }
     };
     var initialize = function() {
         if (!sv.started) {
@@ -140,16 +144,25 @@ const PBL = (function(d) {
             // Initial group state
             sv.HTML["header-bar"] = $("main > .container").html();
             getStatus();
+            // Set up Notify-js
+            onUnsavedloadOverSetup();
         }
     }, btnAction = {
         freeze: function() {
             $("main .pages .page.current button, main .tab-selector").attr("disabled", "");
-            sv.button_freeze = true;
+            sv.state["button_freeze"] = true;
         }, unfreeze: function() {
-            if (sv.button_freeze) {
+            if (sv.state["button_freeze"]) {
                 $("main .pages .page.current button, main .tab-selector").removeAttr("disabled");
-                sv.button_freeze = false;
-                if (sv.current["page"] == "group/information") app.io.confirm("leave");
+                sv.state["button_freeze"] = false;
+                switch (sv.current["page"]) {
+                    case "group/information": {
+                        sv.state["loadInfoOver"] = false; confirmLeave(sv.current["page"]);
+                    break; }
+                    /* case "group/members": {
+                        sv.state["loadSettingsOver"] = false; confirmLeave(sv.current["page"]);
+                    break; } */
+                }
             }
         }
     }, helpCentre = function(type = null) {
@@ -162,6 +175,32 @@ const PBL = (function(d) {
                     const helpWin = window.open($('main > .manual[hidden] a[onClick$="PBL.help(\''+type+'\')"]').attr("data-href"));
                 }
             } app.ui.lightbox.close();
+        }
+    }, onUnsavedloadOverSetup = function() {
+        if (!sv.notifyJsInited) {
+            sv.notifyJsInited = true;
+            $.notify.addStyle("PBL-unsaved", {html: '<div>'+
+                '<div class="clearfix">'+
+                    '<div class="title" data-notify-html="title"></div>'+
+                    '<div class="form inline">'+
+                        '<button class="yellow" name="keep">Keep unsaved changes</button>'+
+                        '<button class="red hollow" name="load">Load updates</button>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'});
+            $(document).on('click', 'main .notifyjs-PBL-unsaved-base [name="keep"]', function() { $(this).trigger('notify-hide'); });
+            $(document).on('click', 'main .page[path="group/information"] .notifyjs-PBL-unsaved-base [name="load"]', function() {
+                load_groupInfo();
+                $(this).trigger('notify-hide');
+            });
+            $(document).on('click', 'main .page[path="group/members"] .notifyjs-PBL-unsaved-base [name="load"]', function() {
+                if (sv.isLeader) {
+                    $('main .page[path^="group/"] .settings [onClick^="PBL.save.settings"]').attr("disabled", "");
+                    cv.mbr_settings.forEach(es => {
+                        d.querySelector('main .page[path^="group/"] .settings [name="'+es+'"]').checked = (sv.groupSettings[es] == "Y");
+                    }); sv.state["loadSettingsOver"] = true; checkUnsavedPage("group/members");
+                } $(this).trigger('notify-hide');
+            });
         }
     }, getStatus = async function() {
         await ajax(cv.API_URL+"status", {type: "get", act: "personal"}).then(function(status) {
@@ -245,8 +284,16 @@ const PBL = (function(d) {
                 } else fill_timeline_status();
             } break;
             case "group/information": {
-                load_groupInfo();
-                sv.button_freeze = true;
+                if (sv.state["loadInfoOver"]) load_groupInfo();
+                else $('main .page[path="group/information"] .form').notify({
+                    title: "You have unsaved changes."
+                }, {
+                    className: "warning",
+                    elementPosition: "bottom right",
+                    autoHideDelay: 60000,
+                    clickToHide: false,
+                    style: "PBL-unsaved"
+                }); sv.state["button_freeze"] = true;
             } break;
             case "group/members": {
                 $('main .page[path="group/members"] .code output[name="gjc"]').val(sv.code);
@@ -406,9 +453,10 @@ const PBL = (function(d) {
                         .text("").removeAttr("class");
                 } delete dat.score;
                 Object.keys(dat).forEach(ei => $('main .page[path="group/information"] [name="'+ei+'"]').val(dat[ei] || "") );
+                sv.state["loadInfoOver"] = true; checkUnsavedPage(sv.current["page"]);
                 var advs = [dat["adv1"], dat["adv2"], dat["adv3"]].filter(ea => ea != null);
                 if (advs.length) await ajax(cv.API_URL+"information", {type: "person", act: "teacher", param: advs.join(",")}).then(function(dat2) {
-                    Object.keys(dat2.list).forEach(et => 
+                    Object.keys(dat2.list).forEach(et =>
                         $('main .page[path="group/information"] [name="adv'+(advs.indexOf(et) + 1).toString()+'"] + input').val(dat2.list[et])
         ); }); } });
     }, update_groupInfo = function() {
@@ -438,7 +486,7 @@ const PBL = (function(d) {
                     }
                 }).then(btnAction.unfreeze).then(function() {
                     $("main .pages .page.current button").attr("disabled", "");
-                    $(window).off("beforeunload");
+                    sv.state["loadInfoOver"] = true; checkUnsavedPage(sv.current["page"]);
                 });
             }
         }()); return false;
@@ -462,11 +510,23 @@ const PBL = (function(d) {
                 }); // Settings
                 if (sv.isLeader) {
                     sv.groupSettings = dat.settings;
-                    $('main .page[path="group/members"] .settings').fadeIn();
-                    $('main .page[path="group/members"] .settings [onClick^="PBL.save.settings"]').attr("disabled", "");
+                    $('main .page[path^="group/"] .settings').fadeIn();
                     // Lookup each
-                    d.querySelector('main .page[path="group/members"] .settings [name="statusOpen"]').checked = (dat.settings["statusOpen"] == "Y");
-                } else $('main .page[path="group/members"] .settings').fadeOut();
+                    if (sv.state["loadSettingsOver"]) {
+                        $('main .page[path^="group/"] .settings [onClick^="PBL.save.settings"]').attr("disabled", "");
+                        cv.mbr_settings.forEach(es => {
+                            d.querySelector('main .page[path^="group/"] .settings [name="'+es+'"]').checked = (sv.groupSettings[es] == "Y");
+                        }); sv.state["loadSettingsOver"] = true; checkUnsavedPage(sv.current["page"]);
+                    } else $('main .page[path^="group/"] .settings').notify({
+                        title: "You have unsaved changes."
+                    }, {
+                        className: "warning",
+                        elementPosition: "bottom center",
+                        autoHideDelay: 60000,
+                        clickToHide: false,
+                        style: "PBL-unsaved"
+                    });
+                } else $('main .page[path^="group/"] .settings').fadeOut();
             }
         });
     }, leave_group = async function(destroy, param=null) {
@@ -501,10 +561,10 @@ const PBL = (function(d) {
         if (typeof sv.groupSettings[settingName] === "undefined") app.ui.notify(1, [3, "Setting not found."]);
         else {
             var newValue = (function(getName) {
-                if (getName == "statusOpen") return (d.querySelector('main .page[path="group/members"] .settings [name="statusOpen"]').checked ? "Y" : "N");
+                if (cv.mbr_settings.includes(getName)) return (d.querySelector('main .page[path^="group/"] .settings [name="'+getName+'"]').checked ? "Y" : "N");
                 return [null];
             }(settingName)),
-                button = $('main .page[path="group/members"] .settings [onClick="PBL.save.settings(\''+settingName+'\')"]');
+                button = $('main .page[path^="group/"] .settings [onClick="PBL.save.settings(\''+settingName+'\')"]');
             if (newValue == [null]) app.ui.notify(1, [3, "Error validating your setting."]);
             if (sv.groupSettings[settingName] == newValue) {
                 app.ui.notify(1, [1, "No change applies."]);
@@ -560,6 +620,20 @@ const PBL = (function(d) {
                 load_work_status();
             }); button.attr("disabled", "");
         }
+    }, confirmLeave = function(page) {
+        if (!sv.history["unsavedPage"].includes(page)) sv.history["unsavedPage"].push(page);
+        $(window).bind("beforeunload", function() {
+            if (!sv.history["unsavedPage"].includes(sv.current["page"]))
+                PBL.openPage(sv.history["unsavedPage"][sv.history["unsavedPage"].length - 1]);
+            return null;
+        });
+    }, checkUnsavedPage = function(page) {
+        /* var flush = true;
+        cv.mbr_settings.forEach(sn => { flush = (flush && sv.state[sn]); });
+        if (flush) app.io.confirm("unleave"); */
+        let pagePos = sv.history["unsavedPage"].indexOf(page);
+        if (pagePos > -1) sv.history["unsavedPage"].splice(pagePos, 1);
+        if (!sv.history["unsavedPage"].length) app.io.confirm("unleave");
     };
     return {
         init: initialize,
@@ -583,7 +657,9 @@ const PBL = (function(d) {
         }, // Export Internal
         btnAction,
         groupCode: () => sv.code,
-        // pageURL: () => sv.current["page"],
-        uploadType: () => sv.current["workType"]
+        pageURL: () => sv.current["page"],
+        uploadType: () => sv.current["workType"],
+        setState: (name, value) => sv.state[name] = value,
+        confirmLeave: confirmLeave
     };
 }(document)); top.PBL = PBL;

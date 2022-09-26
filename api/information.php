@@ -39,7 +39,7 @@
 						slog("PBL", "load", "member", $code, "fail", "", "NotExisted");
 					} else {
 						$code = ($getcode -> fetch_array(MYSQLI_ASSOC))["code"];
-						$get = $db -> query("SELECT mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7,statusOpen FROM PBL_group WHERE code='$code'");
+						$get = $db -> query("SELECT mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7,statusOpen,publishWork FROM PBL_group WHERE code='$code'");
 						if (!$get) {
 							errorMessage(3, "Error loading your data. Please try again.");
 							slog("PBL", "load", "member", $code, "fail", "", "InvalidQuery");
@@ -49,8 +49,12 @@
 							slog("PBL", "load", "member", $code, "fail", "", "NotExisted");
 						} else {
 							$read = $get -> fetch_array(MYSQLI_ASSOC);
-							$data = array("settings" => array("statusOpen" => $read["statusOpen"]));
-							array_pop($read); $data["list"] = array_values(array_filter($read));
+							$data = array("settings" => array(
+								"statusOpen" => $read["statusOpen"],
+								"publishWork" => $read["publishWork"]
+							));
+							for ($_ = 0; $_ < count($data["settings"]); $_++) array_pop($read);
+							$data["list"] = array_values(array_filter($read));
 							successState($data);
 						}
 					}
@@ -126,7 +130,7 @@
 						if ($self <> $readcode["mbr1"]) {
 							errorMessage(3, "Only group leader can change settings, which you are not.");
 							slog("PBL", "edit", "setting", "$code: $setName -> $newValue", "fail", "", "NotEligible");
-						} else if (!in_array($setName, array("statusOpen"))) {
+						} else if (!in_array($setName, array("statusOpen", "publishWork"))) {
 							errorMessage(3, "The settings you are trying to update doesn't exist.");
 							slog("PBL", "edit", "setting", "$code: $setName -> $newValue", "fail", "", "Unavailable");
 						} else {
