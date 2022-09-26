@@ -216,9 +216,9 @@ const PBL = (function(d) {
             if (isGrouped == false) {
                 if (hash == "group/new") sendback = [hash];
                 else if (hash == "group/join") sendback = [hash, null];
-                else if (hash.match(/^group\/join\/[A-Z0-9]{6}$/)) sendback = ["group/join", path[2]];
+                else if (/^group\/join\/[A-Z0-9]{6}$/.test(hash)) sendback = ["group/join", path[2]];
             } else if (isGrouped == true) {
-                if (hash.match(/^(schedule|group\/(information|members)|file\/(documents|assignment)|comments)$/)) sendback = [hash];
+                if (/^(schedule|group\/(information|members)|file\/(documents|assignment)|comments)$/.test(hash)) sendback = [hash];
             } // if (sendback[0] != null) sv.current["page"] = sendback[0];
         } // if (cb_val == null || cb_val == "render") return sendback[0]; else
         return sendback;
@@ -344,10 +344,10 @@ const PBL = (function(d) {
                     adv3: $('main .page[path="group/new"] [name="adv3"]').val(),
                     type: $('main .page[path="group/new"] [name="type"]').val()
                 };
-                if (data.nameth.length && !data.nameth.match(/^[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/)) {
+                if (data.nameth.length && !/^[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameth)) {
                     app.ui.notify(1, [2, "Invalid Thai project name."]);
                     $('main .page[path="group/new"] [name="nameth"]').focus();
-                } else if (data.nameen.length && !data.nameen.match(/^[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/)) {
+                } else if (data.nameen.length && !/^[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameen)) {
                     app.ui.notify(1, [2, "Invalid English project name."]);
                     $('main .page[path="group/new"] [name="nameen"]').focus();
                 } else if (!" ABCDEFGHIJKLM".includes(data.type)) {
@@ -366,7 +366,7 @@ const PBL = (function(d) {
             if (!code.length) {
                 app.ui.notify(1, [2, "Group code empty."]);
                 $('main .page[path="group/join"] [name="gjc"]').focus();
-            } else if (!code.match(/^[A-Z0-9]{6}$/)) {
+            } else if (!/^[A-Z0-9]{6}$/.test(code)) {
                 app.ui.notify(1, [2, "Invalid group code."]);
                 $('main .page[path="group/join"] [name="gjc"]').focus();
             } else {
@@ -407,7 +407,7 @@ const PBL = (function(d) {
         }).then(function() { // Work percentage
             if ((sv.deadlines || true) && sv.workStatus) {
                 if (!sv.status.requireIS) Object.keys(cv.workload)
-                    .forEach(ew => { if (ew.match(/^IS\d-\d$/)) delete sv.workStatus[ew]; });
+                    .forEach(ew => { if (/^IS\d-\d$/.test(ew)) delete sv.workStatus[ew]; });
                 var works = Object.keys(sv.workStatus).length,
                     workDone = Object.values(sv.workStatus).filter(ew => ew).length * 100;
                 workDone = (workDone % works) ? Math.round(workDone/works*100)/100 : workDone/works;
@@ -425,7 +425,7 @@ const PBL = (function(d) {
                 });
                 // Assignments
                 Object.keys(dat).forEach(ew => {
-                    if (!ew.match(/^n\d+$/)) {
+                    if (!/^n\d+$/.test(ew)) {
                         $('main .page[path="file/assignment"] .work output[name="'+ew+'"]')
                             .attr("class", dat[ew] ? "y" : "n")
                             .val(dat[ew] ? "ส่งแล้ว" : "ไม่มีไฟล์");
@@ -469,10 +469,10 @@ const PBL = (function(d) {
                 adv3: $('main .page[path="group/information"] [name="adv3"]').val(),
                 type: $('main .page[path="group/information"] [name="type"]').val()
             };
-            if (data.nameth.length && !data.nameth.match(/^[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/)) {
+            if (data.nameth.length && !/^[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameth)) {
                 app.ui.notify(1, [2, "Invalid Thai project name."]);
                 $('main .page[path="group/information"] [name="nameth"]').focus();
-            } else if (data.nameen.length && !data.nameen.match(/^[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/)) {
+            } else if (data.nameen.length && !/^[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameen)) {
                 app.ui.notify(1, [2, "Invalid English project name."]);
                 $('main .page[path="group/information"] [name="nameen"]').focus();
             } else if (!" ABCDEFGHIJKLM".includes(data.type)) {
@@ -606,7 +606,7 @@ const PBL = (function(d) {
             if (typeof dat.isGrouped !== "undefined" && !dat.isGrouped) initialRender([null, null, 0]); else {
 				if (dat.print) {
                     dat.print = atob(dat.print);
-                    (dat.print.match(/.+\.pdf$/) ? printJS(dat.print) : printJS(dat.print, "image"));
+                    (/.+\.pdf$/.test(dat.print) ? printJS(dat.print) : printJS(dat.print, "image"));
                 } else app.ui.notify(1, [3, "There's a problem preparing your file for print."]);
                 setTimeout(function() { button.removeAttr("disabled"); }, 500);
             }
