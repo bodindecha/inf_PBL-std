@@ -337,8 +337,8 @@ const PBL = (function(d) {
             if (!mode) $('main .page[path="group/new"] input, main .page[path="group/new"] select').val("");
             else {
                 var data = {
-                    nameth: $('main .page[path="group/new"] [name="nameth"]').val().trim(),
-                    nameen: $('main .page[path="group/new"] [name="nameen"]').val().trim(),
+                    nameth: $('main .page[path="group/new"] [name="nameth"]').val().trim().replaceAll("เเ", "แ"),
+                    nameen: $('main .page[path="group/new"] [name="nameen"]').val().trim().replaceAll("เเ", "แ"),
                     adv1: $('main .page[path="group/new"] [name="adv1"]').val(),
                     adv2: $('main .page[path="group/new"] [name="adv2"]').val(),
                     adv3: $('main .page[path="group/new"] [name="adv3"]').val(),
@@ -462,8 +462,8 @@ const PBL = (function(d) {
     }, update_groupInfo = function() {
         (async function() {
             var data = {
-                nameth: $('main .page[path="group/information"] [name="nameth"]').val().trim(),
-                nameen: $('main .page[path="group/information"] [name="nameen"]').val().trim(),
+                nameth: $('main .page[path="group/information"] [name="nameth"]').val().trim().replaceAll("เเ", "แ"),
+                nameen: $('main .page[path="group/information"] [name="nameen"]').val().trim().replaceAll("เเ", "แ"),
                 adv1: $('main .page[path="group/information"] [name="adv1"]').val(),
                 adv2: $('main .page[path="group/information"] [name="adv2"]').val(),
                 adv3: $('main .page[path="group/information"] [name="adv3"]').val(),

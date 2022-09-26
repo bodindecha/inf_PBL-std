@@ -29,21 +29,21 @@
             }
             main p { margin: 0 0 10px; }
             /* Notify-js customizer */
-            .notifyjs-PBL-unsaved-base {
+            main .notifyjs-PBL-unsaved-base {
                 width: 300px;
                 background-color: #FCF8E3;
                 border: 1px solid #FBEED5; border-radius: 5px;
             }
-            .notifyjs-PBL-unsaved-base .title {
+            main .notifyjs-PBL-unsaved-base .title {
                 padding: 5px;
                 text-shadow: 0 1px 0 rgb(255 255 255 / 50%);
                 text-align: center; white-space: nowrap;
             }
-            .notifyjs-PBL-unsaved-base .form {
+            main .notifyjs-PBL-unsaved-base .form {
                 padding: 2.5px 5px 5px;
                 justify-content: center; flex-wrap: nowrap !important;
             }
-            .notifyjs-PBL-unsaved-base button {
+            main .notifyjs-PBL-unsaved-base button {
                 padding: 0 5px;
                 font-size: medium; white-space: nowrap;
             }
