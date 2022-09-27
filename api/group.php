@@ -25,8 +25,8 @@
 						slog("PBL", "new", "group", $data["code"], "fail", "", "Existed");
 					} else { // Join group
 						// Read arguments
-						$nameth = escapeSQL($attr["nameth"]);
-						$nameen = escapeSQL($attr["nameen"]);
+						$nameth = escapeSQL(htmlspecialchars(preg_replace("/เเ/", "แ", $attr["nameth"])));
+						$nameen = escapeSQL(htmlspecialchars(preg_replace("/เเ/", "แ", $attr["nameen"])));
 						$adv1 = (empty($attr["adv1"]) ? "NULL" : "'".escapeSQL($attr["adv1"])."'");
 						$adv2 = (empty($attr["adv2"]) ? "NULL" : "'".escapeSQL($attr["adv2"])."'");
 						$adv3 = (empty($attr["adv3"]) ? "NULL" : "'".escapeSQL($attr["adv3"])."'");
@@ -131,8 +131,8 @@
 					} else {
 						$code = ($get -> fetch_array(MYSQLI_ASSOC))["code"];
 						// Read arguments
-						$nameth = escapeSQL($attr["nameth"]);
-						$nameen = escapeSQL($attr["nameen"]);
+						$nameth = escapeSQL(htmlspecialchars(preg_replace("/เเ/", "แ", $attr["nameth"])));
+						$nameen = escapeSQL(htmlspecialchars(preg_replace("/เเ/", "แ", $attr["nameen"])));
 						$adv1 = (empty($attr["adv1"]) ? "NULL" : "'".escapeSQL($attr["adv1"])."'");
 						$adv2 = (empty($attr["adv2"]) ? "NULL" : "'".escapeSQL($attr["adv2"])."'");
 						$adv3 = (empty($attr["adv3"]) ? "NULL" : "'".escapeSQL($attr["adv3"])."'");
