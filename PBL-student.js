@@ -458,7 +458,15 @@ const PBL = (function(d) {
                 if (advs.length) await ajax(cv.API_URL+"information", {type: "person", act: "teacher", param: advs.join(",")}).then(function(dat2) {
                     Object.keys(dat2.list).forEach(et =>
                         $('main .page[path="group/information"] [name="adv'+(advs.indexOf(et) + 1).toString()+'"] + input').val(dat2.list[et])
-        ); }); } });
+                    ); for (let ti = Object.keys(dat2.list).length+1; ti <= 3; ti++)
+                        $('main .page[path="group/information"] [name="adv'+ti.toString()+'"] + input').val("");
+                }); // Fill empty teachers
+                else for (let ti = 1; ti <= 3; ti++)
+                    $('main .page[path="group/information"] [name="adv'+ti.toString()+'"] + input').val("");
+            } return dat;
+        }).then(function(dat) {
+            if (dat) $("main .pages .page.current button").attr("disabled", "");
+        });
     }, update_groupInfo = function() {
         (async function() {
             var data = {
@@ -490,7 +498,7 @@ const PBL = (function(d) {
                 });
             }
         }()); return false;
-    }, load_member = async function() {
+    }, load_member = async function(andSettings=true) {
         await ajax(cv.API_URL+"information", {type: "group", act: "member"}).then(async function(dat) {
             if (typeof dat.isGrouped !== "undefined" && !dat.isGrouped) initialRender([null, null, 0]); else {
                 // Member names
@@ -511,21 +519,22 @@ const PBL = (function(d) {
                 if (sv.isLeader) {
                     sv.groupSettings = dat.settings;
                     $('main .page[path^="group/"] .settings').fadeIn();
-                    // Lookup each
-                    if (sv.state["loadSettingsOver"]) {
-                        $('main .page[path^="group/"] .settings [onClick^="PBL.save.settings"]').attr("disabled", "");
-                        cv.mbr_settings.forEach(es => {
-                            d.querySelector('main .page[path^="group/"] .settings [name="'+es+'"]').checked = (sv.groupSettings[es] == "Y");
-                        }); sv.state["loadSettingsOver"] = true; checkUnsavedPage(sv.current["page"]);
-                    } else $('main .page[path^="group/"] .settings').notify({
-                        title: "You have unsaved changes."
-                    }, {
-                        className: "warning",
-                        elementPosition: "bottom center",
-                        autoHideDelay: 60000,
-                        clickToHide: false,
-                        style: "PBL-unsaved"
-                    });
+                    if (andSettings) { // Lookup each
+                        if (sv.state["loadSettingsOver"]) {
+                            $('main .page[path^="group/"] .settings [onClick^="PBL.save.settings"]').attr("disabled", "");
+                            cv.mbr_settings.forEach(es => {
+                                d.querySelector('main .page[path^="group/"] .settings [name="'+es+'"]').checked = (sv.groupSettings[es] == "Y");
+                            }); sv.state["loadSettingsOver"] = true; checkUnsavedPage(sv.current["page"]);
+                        } else $('main .page[path^="group/"] .settings').notify({
+                            title: "You have unsaved changes."
+                        }, {
+                            className: "warning",
+                            elementPosition: "bottom center",
+                            autoHideDelay: 60000,
+                            clickToHide: false,
+                            style: "PBL-unsaved"
+                        });
+                    }
                 } else $('main .page[path^="group/"] .settings').fadeOut();
             }
         });
@@ -540,7 +549,7 @@ const PBL = (function(d) {
             if (dat) {
                 if (param != null) {
                     if (typeof dat.message !== "undefined") dat.message.forEach(em => app.ui.notify(1, em));
-                    load_member();
+                    load_member(false);
                 } else {
                     app.ui.notify(1, [0, "You left the group."]);
                     initialRender([null, null, 2]);
@@ -554,7 +563,7 @@ const PBL = (function(d) {
         else if (confirm(cv.MSG["newLeader"])) await ajax(cv.API_URL+"group", {type: "update", act: "leader", param: studentID}).then(function(dat) {
             if (dat) {
                 if (typeof dat.message !== "undefined") dat.message.forEach(em => app.ui.notify(1, em));
-                load_member();
+                load_member(true);
             }
         });
     }, update_groupSetting = async function(settingName) {
@@ -621,12 +630,11 @@ const PBL = (function(d) {
             }); button.attr("disabled", "");
         }
     }, confirmLeave = function(page) {
-        if (!sv.history["unsavedPage"].includes(page)) sv.history["unsavedPage"].push(page);
-        $(window).bind("beforeunload", function() {
+        if (!sv.history["unsavedPage"].length) $(window).bind("beforeunload", function() {
             if (!sv.history["unsavedPage"].includes(sv.current["page"]))
                 PBL.openPage(sv.history["unsavedPage"][sv.history["unsavedPage"].length - 1]);
             return null;
-        });
+        }); if (!sv.history["unsavedPage"].includes(page)) sv.history["unsavedPage"].push(page);
     }, checkUnsavedPage = function(page) {
         /* var flush = true;
         cv.mbr_settings.forEach(sn => { flush = (flush && sv.state[sn]); });

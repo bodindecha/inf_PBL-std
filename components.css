@@ -186,7 +186,11 @@ main .page[path="group/members"] .expand output {
 main .page[path="group/members"] button, main .page[path="group/members"] a[role="button"] { font-size: 12.5px; }
 main .page[path="group/members"] .action > .group { height: 45px; }
 main .page[path="group/members"] > p { line-height: 40px; }
-main .page[path="group/members"] > p button { transform: scale(0.8); }
+main .page[path="group/members"] > p button {
+    /* transform: scale(0.8); */
+    padding: 2.5px 7.5px;
+    height: 35px;
+}
 main .page[path="group/members"] .list {
     margin: -5px 0 15px; padding-left: 25px;
     width: calc(100% - 0);

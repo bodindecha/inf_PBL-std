@@ -17,7 +17,7 @@
             main div.container { overflow: visible !important; }
             main p { margin: 0 0 10px; }
 			main .icon, main i.--material-icons, main i.fa[class~="fa-"] { display: flex; align-items: center; }
-            main .title-btn { display: flex; justify-content: space-between; }
+            main .title-btn { display: flex; justify-content: space-between; align-items: center; }
             main h2:first-child a {
                 color: var(--clr-bs-gray) !important;
                 transition: var(--time-tst-xfast);
@@ -46,6 +46,9 @@
             main .notifyjs-PBL-unsaved-base button {
                 padding: 0 5px;
                 font-size: medium; white-space: nowrap;
+            }
+            @media only screen and (max-width: 768px) {
+                main .notifyjs-PBL-unsaved-base button { font-size: small; }
             }
 		</style>
         <link rel="stylesheet" href="/s/PBL/v2/components.min.css" />
