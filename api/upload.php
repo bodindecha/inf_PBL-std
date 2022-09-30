@@ -34,7 +34,7 @@
     // Execute
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else {
         if (!in_array($file, array_keys($fileCfg))) errorMessage(1, "Invalid upload category"); else {
-            //Get group
+            // Get group
             # $code = escapeSQL($attr["code"]);
             $getcode = $db -> query("SELECT code,fileStatus,fileType FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
             if (!$getcode) errorMessage(3, "Error loading your data. Please try again.");

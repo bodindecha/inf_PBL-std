@@ -2,7 +2,7 @@
     $dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
 	require($dirPWroot."resource/hpe/init_ps.php");
 	$header_title = "IS & PBL - Student";
-	$header_desc = "ระบบบริหารโครงงาน PBL";
+	$header_desc = "ระบบจัดการโครงงาน IS และ PBL";
 	$home_menu = "is-pbl";
     $forceExternalBrowser = true;
 ?>
@@ -70,7 +70,6 @@
                         if (exclude[1] != "") exc += (exc == "" ? "" : ",") + exclude[1];
                         if (exclude[2] != "") exc += (exc == "" ? "" : ",") + exclude[2];
                         fst.start("เลือกครูที่ปรึกษาโครงงานคนที่ "+ai, 'input[name="adv'+ai+'"]', 'input[name="adv'+ai+'"] + input[readonly]', exc);
-
                     }
                 }, show: {
                     ungrouped: function() {
@@ -105,7 +104,7 @@
             };
             const validate_field = pUI.form.btnState;
 		</script>
-		<script type="text/javascript" src="/s/PBL/v2/PBL-student.min.js"></script>
+		<script type="text/javascript" src="/s/PBL/v2/project-manager.min.js"></script>
 		<script type="text/javascript" src="/resource/js/extend/all-PBL.js"></script>
 		<script type="text/javascript" src="/resource/js/extend/fs-teacher.js"></script>
 		<script type="text/javascript" src="/resource/js/lib/print.min.js"></script>
@@ -115,8 +114,7 @@
 		<?php require($dirPWroot."resource/hpe/header.php"); ?>
 		<main shrink="<?php echo($_COOKIE['sui_open-nt'])??"false"; ?>">
 			<div class="container">
-				<h2 class="title-btn"><?=$header_desc?> <a href="javascript:PBL.help();" class="icon"><i class="fa fa-question-circle"></i></a></h2>
-				
+				<h2 class="title-btn">ระบบจัดการโครงงาน PBL <a href="javascript:PBL.help();" class="icon"><i class="fa fa-question-circle"></i></a></h2>
 			</div>
             <div class="manual" hidden>
                 <style type="text/css">

@@ -23,7 +23,7 @@
 							"message" => array(array(1, "You can't create a new group while you're already in a group."))
 						); successState($data);
 						slog("PBL", "new", "group", $data["code"], "fail", "", "Existed");
-					} else { // Join group
+					} else { // Create group
 						// Read arguments
 						$nameth = escapeSQL(htmlspecialchars(preg_replace("/เเ/", "แ", $attr["nameth"])));
 						$nameen = escapeSQL(htmlspecialchars(preg_replace("/เเ/", "แ", $attr["nameen"])));
@@ -74,7 +74,7 @@
 						slog("PBL", "join", "group", $code, "fail", "", "InvalidValue");
 					} else {
 						// Check if code exists
-						$getinfo = $db -> query("SELECT grade,room,mbr1,maxmbramt,statusOpen FROM PBL_group WHERE year=$year AND code='$code'");
+						$getinfo = $db -> query("SELECT grade,room,mbr1,maxMember,statusOpen FROM PBL_group WHERE year=$year AND code='$code'");
 						if (!$getinfo) {
 							errorMessage(3, "Unable to check availability.");
 							slog("PBL", "join", "group", $code, "fail", "", "InvalidQuery");
@@ -97,7 +97,7 @@
 								} else if ($findseat -> num_rows) { // Check seat
 									$seats = $findseat -> fetch_array(MYSQLI_ASSOC);
 									$myseat = array_search("", $seats);
-									if (count(array_filter($seats))+1 >= intval($criteria["maxmbramt"])) {
+									if (count(array_filter($seats)) > intval($criteria["maxMember"])) {
 										errorMessage(3, "Unable to join the group.");
 										errorMessage(1, "The group you are trying to join is full.");
 										slog("PBL", "join", "group", $code, "fail", "", "NotEmpty");
@@ -151,19 +151,22 @@
 				} break;
 				case "leader": {
 					# $code = escapeSQL($attr["code"]);
-					$get = $db -> query("SELECT code,mbr1,fileStatus,fileType FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
+					$candidate = escapeSQL($attr);
+					$get = $db -> query("SELECT code,mbr1 FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
 					if (!$get) errorMessage(3, "Error loading your data. Please try again.");
 					else if (!$get -> num_rows) {
 						successState(array("isGrouped" => false));
-						slog("PBL", "edit", "leader", "$code: leader -> $attr", "fail", "", "NotExisted");
+						slog("PBL", "edit", "leader", "$code: leader -> $candidate", "fail", "", "NotExisted");
 					} else {
 						$get = $get -> fetch_array(MYSQLI_ASSOC);
 						$code = $get["code"];
 						if ($self <> $get["mbr1"]) {
 							errorMessage(3, "Only group leader can make others a new group leader, which you are not.");
-							slog("PBL", "edit", "leader", "$code: leader -> $attr", "fail", "", "Unauthorize");
+							slog("PBL", "edit", "leader", "$code: leader -> $candidate", "fail", "", "Unauthorized");
+						} else if ($candidate == $get["mbr1"]) {
+							errorMessage(3, "You are already a group leader.");
+							slog("PBL", "edit", "leader", "$code: leader -> $candidate", "fail", "", "Existed");
 						} else {
-							$candidate = escapeSQL($attr);
 							$findseat = $db -> query("SELECT mbr2,mbr3,mbr4,mbr5,mbr6,mbr7 FROM PBL_group WHERE code='$code' AND $candidate IN(mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
 							if (!$findseat) {
 								errorMessage(3, "Can't set someone outside of your group as a leader.");
@@ -227,7 +230,7 @@
 				case "void": {
 					$fileCfg = array("mindmap", "IS1-1", "IS1-2", "IS1-3", "report-1", "report-2", "report-3", "report-4", "report-5", "report-all", "abstract", "poster");
 					# $code = escapeSQL($attr["code"]);
-					$get = $db -> query("SELECT code,grade,mbr1,fileStatus,fileType FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
+					$get = $db -> query("SELECT code,year,grade,mbr1,fileStatus,fileType FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
 					if (!$get) errorMessage(3, "Error loading your data. Please try again.");
 					else if (!$get -> num_rows) {
 						successState(array("isGrouped" => false));
@@ -235,16 +238,18 @@
 					} else {
 						$read = $get -> fetch_array(MYSQLI_ASSOC);
 						$code = $read["code"];
+						$grade = $read["grade"];
 						if ($self <> $read["mbr1"]) {
 							errorMessage(3, "Only group leader can delete the group, which you are not.");
 							slog("PBL", "del", "group", $code, "fail", "", "NotEligible");
 						} else {
-							$success = $db -> query("UPDATE PBL_group SET nameth='',nameen='',type='',mbr".implode("=NULL,mbr", str_split("1234567"))."=NULL,maxmbramt=6,statusOpen='Y',adv1=NULL,adv2=NULL,adv3=NULL,fileStatus=0,fileType=';;;;;;;;;;;',score=NULL WHERE code='$code'");
+							$success = $db -> query("UPDATE PBL_group SET nameth='',nameen='',type='',mbr".implode("=NULL,mbr", str_split("1234567"))."=NULL,maxMember=6,statusOpen='Y',publishWork='Y',adv1=NULL,adv2=NULL,adv3=NULL,fileStatus=0,fileType=';;;;;;;;;;;',score=NULL WHERE code='$code'");
 							if ($success) {
 								if (intval($read["fileStatus"])) { // Delete uploaded file(s)
 									$status = $read["fileStatus"];
 									$status = strrev(substr(base_convert(pow(2, count($fileCfg))|$status, 10, 2), 1));
 									$fileType = explode(";", $group["fileType"]);
+									$year = $read["year"]; $grade = $read["grade"];
 									function bit2bool($fileStatus) {
 										return boolval($fileStatus);
 									} $status = array_combine($fileCfg, array_map("bit2bool", str_split($status)));
