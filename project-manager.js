@@ -189,7 +189,7 @@ const PBL = (function(d) {
                 '</div>'+
             '</div>'});
             $(document).on('click', 'main .notifyjs-PBL-unsaved-base [name="keep"]', function() { $(this).trigger('notify-hide'); });
-            $(document).on('click', 'main .notifyjs-PBL-unsaved-base [name="load"]', function() {
+            $(document).on('click', 'main .page[path="group/information"] .notifyjs-PBL-unsaved-base [name="load"]', function() {
                 load_groupInfo();
                 $(this).trigger('notify-hide');
             });
@@ -239,13 +239,12 @@ const PBL = (function(d) {
         // Add pages
         $("main > .container .pages").load("/s/PBL/v2/blocks.html .pages[page-type="+dType+"g]", function() {
             $("main > .container > .pages").html($("main > .container .pages > .pages").html());
-            PBL.openPage(loadPart[0], loadPart);
             if (dType == "h") {
                 renderBlock("schedule", "block");
                 renderBlock("file/documents", "checkIS");
                 renderBlock("file/assignment", "readyTable");
                 chatApp.start("std", [sv.code], true); sv.chatInit = false;
-            }
+            } PBL.openPage(loadPart[0], loadPart);
         });
     }, load_page = function(me, args=[]) {
         if (typeof me === "string") me = d.querySelector('main .tab-selector .tab[data-page="'+me+'"]');

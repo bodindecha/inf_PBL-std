@@ -26,25 +26,28 @@
 							$year = $read["year"]; $grade = $read["grade"];
 							$path = "resource/upload/PBL/$year/$attr/$grade/$code.$extension";
 							$finder = $dirPWroot.$path;
-							if (file_exists($finder)) {
-								if (unlink($finder)) {
-									$fileTypes = explode(";", $read["fileType"]);
-									$fileTypes[$filePos] = ""; $fileTypes = implode(";", $fileTypes);
-									$success = $db -> query("UPDATE PBL_group SET fileStatus=~(~fileStatus|".pow(2, $filePos)."),fileType='$fileTypes' WHERE code='$code'");
-									if ($success) {
-										successState();
-										slog("PBL", "del", "file", "$code: $attr", "pass");
-									} else {
-										errorMessage(3, "Unable to remove file.");
-										slog("PBL", "del", "file", "$code: $attr", "fail", "", "InvalidQuery");
-									}
+							function removeSuccess() {
+								global $read, $filePos, $db, $code, $attr;
+								$fileTypes = explode(";", $read["fileType"]);
+								$fileTypes[$filePos] = ""; $fileTypes = implode(";", $fileTypes);
+								$success = $db -> query("UPDATE PBL_group SET fileStatus=~(~fileStatus|".pow(2, $filePos)."),fileType='$fileTypes' WHERE code='$code'");
+								if ($success) {
+									successState();
+									slog("PBL", "del", "file", "$code: $attr", "pass");
 								} else {
+									errorMessage(3, "Unable to remove file.");
+									slog("PBL", "del", "file", "$code: $attr", "fail", "", "InvalidQuery");
+								}
+							} if (file_exists($finder)) {
+								if (unlink($finder)) removeSuccess();
+								else {
 									errorMessage(3, "Unable to delete file.");
 									slog("PBL", "del", "file", "$code: $attr", "fail", "", "Incorrect");
 								}
 							} else {
-								errorMessage(3, "No file to remove.");
-								slog("PBL", "del", "file", "$code: $attr", "fail", "", "Empty");
+								# errorMessage(3, "No file to remove.");
+								# slog("PBL", "del", "file", "$code: $attr", "fail", "", "Empty");
+								removeSuccess();
 							}
 						} else {
 							errorMessage(3, "File not found.");
