@@ -97,12 +97,11 @@
 								} else if ($findseat -> num_rows) { // Check seat
 									$seats = $findseat -> fetch_array(MYSQLI_ASSOC);
 									$myseat = array_search("", $seats);
-									if (count(array_filter($seats)) > intval($criteria["maxMember"])) {
+									if (count(array_filter($seats)) >= intval($criteria["maxMember"])) {
 										errorMessage(3, "Unable to join the group.");
 										errorMessage(1, "The group you are trying to join is full.");
 										slog("PBL", "join", "group", $code, "fail", "", "NotEmpty");
 									} else {
-
 										$success = $db -> query("UPDATE PBL_group SET $myseat=$self WHERE code='$code'");
 										if ($success) {
 											successState(array(
