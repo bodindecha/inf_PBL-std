@@ -395,14 +395,14 @@ const PBL = (function(d) {
             var now = Date.now(), present = false;
             if (sv.workStatus) cv.timeline.forEach(ep => {
                 if (ep.sem && (ep.isPBL || (!ep.isPBL && sv.status.requireIS))) {
-                    var done = true, color = "p", deadline = new Date(sv.deadlines[ep.deadline]).getTime();
+                    var done = true, color = "p", deadline = new Date(sv.deadlines[ep.deadline][1]).getTime();
                     Object.keys(ep.works).forEach(ew => { done = (done && sv.workStatus[ew]); });
                     if (now > deadline) color = (done ? "e" : "m");
                     else if (!present) { color = (done ? "e" : "s"); present = !present; }
                     else color = (done ? "i" : "p");
                     $('main .page[path="schedule"] .sec-'+ep.deadline+' .disp').attr("class", "disp "+color);
                 }
-            }); else $('main .page[path="schedule"] .sec-'+ep.deadline+' .disp').attr("class", "disp p");
+            }); else $('main .page[path="schedule"] .sec .disp').attr("class", "disp p");
         }).then(function() { // Work percentage
             if ((sv.deadlines || true) && sv.workStatus) {
                 if (!sv.status.requireIS) Object.keys(cv.workload)
