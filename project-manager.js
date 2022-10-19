@@ -398,8 +398,10 @@ const PBL = (function(d) {
                     var done = true, color = "p", deadline = new Date(sv.deadlines[ep.deadline][1]).getTime();
                     Object.keys(ep.works).forEach(ew => { done = (done && sv.workStatus[ew]); });
                     if (now > deadline) color = (done ? "e" : "m");
-                    else if (!present) { color = (done ? "e" : "s"); present = !present; }
-                    else color = (done ? "i" : "p");
+                    else if (!present) {
+                        color = (done ? "e" : "s");
+                        if (nextFuture(ep.deadline)) present = !present;
+                    } else color = (done ? "i" : "p");
                     $('main .page[path="schedule"] .sec-'+ep.deadline+' .disp').attr("class", "disp "+color);
                 }
             }); else $('main .page[path="schedule"] .sec .disp').attr("class", "disp p");
@@ -437,6 +439,10 @@ const PBL = (function(d) {
             } else sys.auth.orize(true, true);
             sv.workStatus = dat;
         });
+    }, nextFuture = function(current) {
+        var list = Object.keys(sv.deadlines);
+        var next = sv.deadlines[list[list.indexOf(current)+1]];
+        return (typeof next === "undefined" || sv.deadlines[current][1] < next[1]);
     }, load_groupInfo = async function() {
         await ajax(cv.API_URL+"information", {type: "group", act: "title"}).then(async function(dat) {
             if (typeof dat.isGrouped !== "undefined" && !dat.isGrouped) initialRender([null, null, 0]); else {
