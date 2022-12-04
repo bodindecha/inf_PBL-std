@@ -1,20 +1,3 @@
-const ajax = async function(url, params=null, method="POST", resultType="json") {
-    let opts = {
-        url: url, type: method, resultType: resultType,
-    }; if (params != null) opts.data = params;
-    var response = /* $.ajax(opts); */ new Promise(function(resolve) {
-        /* let req = new XMLHttpRequest();
-        req.open(method, url);
-        req.onload = () => resolve(JSON.parse(req.response));
-        req.send(); */
-        opts.success = function(result) { resolve(JSON.parse(result)); };
-        $.ajax(opts);
-    }); // return await response;
-    var dat = await response;
-    if (dat.success) return (typeof dat.info !== "undefined" ? dat.info : true);
-    else dat.reason.forEach(em => app.ui.notify(1, em));
-    return false;
-};
 const PBL = (function(d) {
     const cv = {
         API_URL: "/s/PBL/v2/api/", USER: top.USER,
@@ -27,11 +10,11 @@ const PBL = (function(d) {
                     output += '<div class="work"><i class="material-icons" work="'+work+'"></i><label>'+pd.works[work]+'</label></div>'
                 }); output += '</div></div>';
                 return output;
-            }, "work-act": type => '<button class="blue" onClick="PBL.upload(\''+type+'\')" data-title="Replace with new file"><i class="fa fa-upload"></i></button>'+
-                '<button class="gray" onClick="PBL.file.preview(\''+type+'\')" data-title="View file"><i class="material-icons">visibility</i></button>'+
-                '<button class="yellow" onClick="PBL.file.print(\''+type+'\')" data-title="Print file"><i class="material-icons">print</i></button>'+
-                '<button class="green" onClick="PBL.file.download(\''+type+'\')" data-title="Download file"><i class="material-icons">download</i></button>'+
-                '<button class="red" onClick="PBL.file.remove(\''+type+'\')" data-title="Remove file"><i class="material-icons">delete</i></button>'
+            }, "work-act": type => '<button class="blue icon" onClick="PBL.upload(\''+type+'\')" data-title="Replace with new file"><i class="fa fa-upload"></i></button>'+
+                '<button class="gray icon" onClick="PBL.file.preview(\''+type+'\')" data-title="View file"><i class="material-icons">visibility</i></button>'+
+                '<button class="yellow icon" onClick="PBL.file.print(\''+type+'\')" data-title="Print file"><i class="material-icons">print</i></button>'+
+                '<button class="green icon" onClick="PBL.file.download(\''+type+'\')" data-title="Download file"><i class="material-icons">download</i></button>'+
+                '<button class="red icon" onClick="PBL.file.remove(\''+type+'\')" data-title="Remove file"><i class="material-icons">delete</i></button>'
         },
         tab_menu: {
             ng: [
@@ -430,7 +413,7 @@ const PBL = (function(d) {
                             .attr("class", dat[ew] ? "y" : "n")
                             .val(dat[ew] ? "ส่งแล้ว" : "ไม่มีไฟล์");
                         var action = (dat[ew] ? cv.HTML["work-act"](ew)
-                            : '<button class="blue hollow" onClick="PBL.upload(\''+ew+'\')"><i class="material-icons">add_circle</i>Upload attatchment</button>');
+                            : '<button class="blue hollow icon" onClick="PBL.upload(\''+ew+'\')"><i class="material-icons">add_circle</i>Upload attatchment</button>');
                         $('main .page[path="file/assignment"] .work [data-work="'+ew+'"]')
                             .html(action)
                             .attr("class", "group center"+(dat[ew] ? " action" : ""));

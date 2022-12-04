@@ -59,10 +59,10 @@
     </div>
     <div class="page" path="group/join">
         <form class="form wrapper message rainbow-bg">
-            <div class="group spread"><div class="group">
+            <div class="group spread">
                 <input name="gjc" type="text" maxlength="6" size="6" pattern="[A-Za-z0-9]{6}" placeholder="Enter group code here" required>
                 <button onClick="return PBL.joinGroup()" class="cyan">Join</button>
-            </div></div>
+            </div>
             <center style="font-size: 0.8em;"><a href="javascript:" onClick="pUI.show.ungrouped()" draggable="false">เพื่อนที่ยังไม่มีกลุ่ม</a></center>
         </form>
     </div>
@@ -157,49 +157,49 @@
                     <td>ใบความรู้</td>
                     <td>ความหมายของโครงงาน</td>
                     <td><div class="act-group">
-                        <a role="button" class="cyan hollow" href="https://drive.google.com/a/bodin.ac.th/open?id=1v0BKZssKPVkD_CcGxeKR3GhN146zoCfL"><i class="material-icons">visibility</i>เปิดไฟล์</a>
+                        <a role="button" class="cyan hollow icon" href="https://drive.google.com/a/bodin.ac.th/open?id=1v0BKZssKPVkD_CcGxeKR3GhN146zoCfL"><i class="material-icons">visibility</i>เปิดไฟล์</a>
                     </div></td>
                 </tr>
                 <tr>
                     <td>แหล่งข้อมูล</td>
                     <td>ข้อมูลเบื้องต้นเกี่ยวกับหัวข้อในการจัดทำโครงงาน</td>
                     <td><div class="act-group">
-                        <a role="button" class="gray hollow" href="https://pbl.bodin.ac.th/aids/general"><i class="material-icons">open_in_new</i>เปิดดู</a>
+                        <a role="button" class="gray hollow icon" href="https://pbl.bodin.ac.th/aids/general"><i class="material-icons">open_in_new</i>เปิดดู</a>
                     </div></td>
                 </tr>
                 <tr>
                     <td>ตัวอย่าง</td>
                     <td>โครงงานที่น่าสนใจ</td>
                     <td><div class="act-group">
-                        <a role="button" class="gray hollow" href="https://pbl.bodin.ac.th/aids/otherexample"><i class="material-icons">open_in_new</i>เปิดดู</a>
+                        <a role="button" class="gray hollow icon" href="https://pbl.bodin.ac.th/aids/otherexample"><i class="material-icons">open_in_new</i>เปิดดู</a>
                     </div></td>
                 </tr>
                 <tr class="isInIS">
                     <td>ใบงาน</td>
                     <td>IS1-1 ประเด็นที่ต้องการศึกษา</td>
                     <td><div class="act-group">
-                        <a role="button" class="cyan hollow" href="https://drive.google.com/a/bodin.ac.th/open?id=1N_nM3H1HQl6U7rt8pBsHdkEH9n-3TYd9"><i class="material-icons">visibility</i>เปิดไฟล์</a>
+                        <a role="button" class="cyan hollow icon" href="https://drive.google.com/a/bodin.ac.th/open?id=1N_nM3H1HQl6U7rt8pBsHdkEH9n-3TYd9"><i class="material-icons">visibility</i>เปิดไฟล์</a>
                     </div></td>
                 </tr>
                 <tr class="isInIS">
                     <td>ใบงาน</td>
                     <td>IS1-2 การระบุปัญหา</td>
                     <td><div class="act-group">
-                        <a role="button" class="cyan hollow" href="https://drive.google.com/a/bodin.ac.th/open?id=1BR8aKYf7Ykbcky9LpOOCClfHBB6rm_bg"><i class="material-icons">visibility</i>เปิดไฟล์</a>
+                        <a role="button" class="cyan hollow icon" href="https://drive.google.com/a/bodin.ac.th/open?id=1BR8aKYf7Ykbcky9LpOOCClfHBB6rm_bg"><i class="material-icons">visibility</i>เปิดไฟล์</a>
                     </div></td>
                 </tr>
                 <tr class="isInIS">
                     <td>ใบงาน</td>
                     <td>IS1-3 การระบุสมมติฐาน</td>
                     <td><div class="act-group">
-                        <a role="button" class="cyan hollow" href="https://drive.google.com/a/bodin.ac.th/open?id=1VIEBBjt_Bex9RLdmcbJ99segm0jkZ-u9"><i class="material-icons">visibility</i>เปิดไฟล์</a>
+                        <a role="button" class="cyan hollow icon" href="https://drive.google.com/a/bodin.ac.th/open?id=1VIEBBjt_Bex9RLdmcbJ99segm0jkZ-u9"><i class="material-icons">visibility</i>เปิดไฟล์</a>
                     </div></td>
                 </tr>
                 <tr>
                     <td>แบบฟอร์ม</td>
                     <td>รายงานโครงงาน PBL</td>
                     <td><div class="act-group">
-                        <a role="button" class="gray hollow" href="https://pbl.bodin.ac.th/aids/forms"><i class="material-icons">open_in_new</i>เปิดดู</a>
+                        <a role="button" class="gray hollow icon" href="https://pbl.bodin.ac.th/aids/forms"><i class="material-icons">open_in_new</i>เปิดดู</a>
                     </div></td>
                 </tr>
                 <tr>
@@ -209,8 +209,8 @@
                         <div class="group center">
                             <span><i class="material-icons">download</i> ดาวน์โหลด</span>
                             <!--a role="button" class="green hollow" disabled><i class="material-icons">download</i>ดาวน์โหลด</a-->
-                            <a role="button" class="red" href="https://drive.google.com/a/bodin.ac.th/uc?id=1Lhxo-1JbmbnBVjXMTqY4t281jz9Sk9U2&export=download" data-title="PDF" download><i class="fa fa-file-pdf-o"></i></a>
-                            <a role="button" class="blue" href="https://drive.google.com/a/bodin.ac.th/uc?id=1whSk7B0CmgzCqavsw4XiMMoWzP00oxSl&export=download" data-title="Word" download><i class="fa fa-file-word-o"></i></a>
+                            <a role="button" class="red icon" href="https://drive.google.com/a/bodin.ac.th/uc?id=1Lhxo-1JbmbnBVjXMTqY4t281jz9Sk9U2&export=download" data-title="PDF" download><i class="fa fa-file-pdf-o"></i></a>
+                            <a role="button" class="blue icon" href="https://drive.google.com/a/bodin.ac.th/uc?id=1whSk7B0CmgzCqavsw4XiMMoWzP00oxSl&export=download" data-title="Word" download><i class="fa fa-file-word-o"></i></a>
                         </div>
                     </div></td>
                 </tr>
