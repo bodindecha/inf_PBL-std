@@ -17,7 +17,8 @@
 						slog("PBL", "load", "info", $code, "fail", "", "NotExisted");
 					} else {
 						$code = ($getcode -> fetch_array(MYSQLI_ASSOC))["code"];
-						$get = $db -> query("SELECT nameth,nameen,type,adv1,adv2,adv3,score FROM PBL_group WHERE code='$code'");
+						// No COALESCE on score -> only show when all is graded
+						$get = $db -> query("SELECT nameth,nameen,type,adv1,adv2,adv3,score_paper+score_poster+score_present AS score FROM PBL_group WHERE code='$code'");
 						if (!$get) {
 							errorMessage(3, "Error loading your data. Please try again.");
 							slog("PBL", "load", "info", $code, "fail", "", "InvalidQuery");
