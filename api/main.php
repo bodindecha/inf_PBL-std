@@ -10,7 +10,7 @@
 			switch ($command) {
 				case "remove": {
 					$fileCfg = array("mindmap", "IS1-1", "IS1-2", "IS1-3", "report-1", "report-2", "report-3", "report-4", "report-5", "report-all", "abstract", "poster");
-					$filePos = array_search($attr, array_keys($fileCfg));
+					$filePos = array_search($attr, $fileCfg);
 					# $code = escapeSQL($attr["code"]);
 					$get = $db -> query("SELECT code,year,grade,fileStatus,fileType FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
 					if (!$get) errorMessage(3, "Error loading your data. Please try again.");
@@ -38,7 +38,8 @@
 									errorMessage(3, "Unable to remove file.");
 									slog("PBL", "del", "file", "$code: $attr", "fail", "", "InvalidQuery");
 								}
-							} if (file_exists($finder)) {
+							} // Find and delete file
+							if (file_exists($finder)) {
 								if (unlink($finder)) removeSuccess();
 								else {
 									errorMessage(3, "Unable to delete file.");

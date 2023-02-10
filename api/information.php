@@ -18,7 +18,7 @@
 					} else {
 						$code = ($getcode -> fetch_array(MYSQLI_ASSOC))["code"];
 						// No COALESCE on score -> only show when all is graded
-						$get = $db -> query("SELECT nameth,nameen,type,adv1,adv2,adv3,score_paper+score_poster+score_present AS score FROM PBL_group WHERE code='$code'");
+						$get = $db -> query("SELECT a.nameth,a.nameen,a.type,a.adv1,a.adv2,a.adv3,a.score_poster+a.score_present+(CASE WHEN ROUND(SUM(b.total)/COUNT(b.cmte))<50 THEN 2 ELSE 3 END) AS score FROM PBL_group a LEFT JOIN PBL_score b ON b.code=a.code WHERE a.code='$code' GROUP BY b.code");
 						if (!$get) {
 							errorMessage(3, "Error loading your data. Please try again.");
 							slog("PBL", "load", "info", $code, "fail", "", "InvalidQuery");

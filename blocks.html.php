@@ -169,7 +169,14 @@
                 </tr>
                 <tr>
                     <td>ตัวอย่าง</td>
-                    <td>โครงงานที่น่าสนใจ</td>
+                    <td>โครงงานและโปสเตอร์</td>
+                    <td><div class="act-group">
+                        <a role="button" class="gray hollow icon" href="https://pbl.bodin.ac.th/example"><i class="material-icons">open_in_new</i>เปิดดู</a>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td>ตัวอย่าง</td>
+                    <td>โครงงานที่น่าสนใจอื่นๆ</td>
                     <td><div class="act-group">
                         <a role="button" class="gray hollow icon" href="https://pbl.bodin.ac.th/aids/otherexample"><i class="material-icons">open_in_new</i>เปิดดู</a>
                     </div></td>

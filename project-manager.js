@@ -149,15 +149,24 @@ const PBL = (function(d) {
             }
         }
     }, helpCentre = function(type = null) {
-        if (type == null) app.ui.lightbox.open("mid", {title: "ความช่วยเหลือ", allowclose: true, autoclose: 60000, html: d.querySelector("main > .manual[hidden]").innerHTML});
+        if (type == null) app.ui.lightbox.open("mid", {title: "ความช่วยเหลือ", allowclose: true, html: d.querySelector("main > .manual[hidden]").innerHTML});
         else {
             switch (type) {
-                case "document": app.ui.notify(1, [2, "Help: Manual document is currently unavailable."]); break;
-                case "mediaVDO": app.ui.notify(1, [2, "Help: Manual video playlist is currently unavailable."]); break;
+                case "document": {
+                    // app.ui.notify(1, [2, "Help: Manual document is currently unavailable."]);
+                    let size = [$(".lightbox .body").width().toString()+"px", $(".lightbox .body").height().toString()+"px"]
+                    $(".lightbox .body").html('<iframe src="/go?url='+encodeURIComponent("https://drive.google.com/a/bodin.ac.th/file/d/1-CUAnQJUDdowRi0hAoq5v9kZwZIzQrx3/preview")+'" style="width:'+size[0]+';height:'+size[1]+';border:none">Loading...</iframe>');
+                    $(".lightbox .body > iframe").animate({width: "90vw", height: "80vh"});
+                break; }
+                case "mediaVDO": {
+                    app.ui.notify(1, [2, "Help: Manual video playlist is currently unavailable."]);
+                    app.ui.lightbox.close();
+                break; }
                 default: {
                     const helpWin = window.open($('main > .manual[hidden] a[onClick$="PBL.help(\''+type+'\')"]').attr("data-href"));
+                    app.ui.lightbox.close();
                 }
-            } app.ui.lightbox.close();
+            }
         }
     }, onUnsavedloadOverSetup = function() {
         if (!sv.notifyJsInited) {
@@ -187,9 +196,9 @@ const PBL = (function(d) {
         }
     }, getStatus = async function() {
         await ajax(cv.API_URL+"status", {type: "get", act: "personal"}).then(function(status) {
-            let loadPart = checkHashPath(status.isGrouped, "render");
             sv.status = status;
             sv.code = status.code;
+            let loadPart = checkHashPath(sv.status.isGrouped, "render");
             initialRender(loadPart);
         });
     }, checkHashPath = function(isGrouped=null, cb_val=null) {
@@ -413,7 +422,7 @@ const PBL = (function(d) {
                             .attr("class", dat[ew] ? "y" : "n")
                             .val(dat[ew] ? "ส่งแล้ว" : "ไม่มีไฟล์");
                         var action = (dat[ew] ? cv.HTML["work-act"](ew)
-                            : '<button class="blue hollow icon" onClick="PBL.upload(\''+ew+'\')"><i class="material-icons">add_circle</i>Upload attatchment</button>');
+                            : '<button class="blue hollow icon" onClick="PBL.upload(\''+ew+'\')"><i class="material-icons">add_circle</i>Upload attachment</button>');
                         $('main .page[path="file/assignment"] .work [data-work="'+ew+'"]')
                             .html(action)
                             .attr("class", "group center"+(dat[ew] ? " action" : ""));
@@ -433,7 +442,7 @@ const PBL = (function(d) {
                     $('main .page[path="group/information"] .score').fadeIn();
                     $('main .page[path="group/information"] [name="net"]')
                         .text(dat.score)
-                        .attr("class", "color-"+(" rrrog".split("")[dat.score]));
+                        .attr("class", "color-"+(" rrrog"[dat.score]));
                 } else {
                     $('main .page[path="group/information"] .score').fadeOut();
                     $('main .page[path="group/information"] [name="net"]')
@@ -492,9 +501,9 @@ const PBL = (function(d) {
                 await ajax(cv.API_URL+"information", {type: "person", act: "student", param: dat.list.join(",")}).then(function(dat2) {
                     var index = 1, listBody = ""; sv.isLeader = (cv.USER == dat2.list[0].ID);
                     dat2.list.forEach(es => {
-                        listBody += '<tr><td>'+index.toString()+'.</td><td>'+es.fullname+' (<a href="/'+es.ID+'" target="_blank" draggable="false">'+es.nickname+'</a>)</td><td>เลขที่ '+es.number+'</td><td>';
-                        if (index++ == 1) listBody += '<a role="button" class="default" disabled>หัวหน้ากลุ่ม</a>';
-                        else if (sv.isLeader) listBody += '<div class="group">'+
+                        listBody += '<tr><td>'+index.toString()+'.</td><td>'+es.fullname+' (<a href="/user/'+es.ID+'" target="_blank" draggable="false">'+es.nickname+'</a>)</td><td>เลขที่ '+es.number+'</td><td>';
+                        if (index++ == 1) listBody += '<a role="button" class="default pill" disabled>หัวหน้ากลุ่ม</a>';
+                        else if (sv.isLeader) listBody += '<div class="group pill">'+
                             '<button onClick="PBL.kick('+es.ID+')" class="red hollow">ลบชื่อออก</button>'+
                             '<button onClick="PBL.setLeader('+es.ID+')" class="yellow hollow icon" data-title="Set as leader">👑</button>'+
                             '</div>';
