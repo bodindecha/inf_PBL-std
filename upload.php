@@ -94,37 +94,37 @@
 							sizeLimit: 5, closeTime: "2022-09-14 23:59:59"
 						}, "IS1-1": {
 							name: "ใบงาน IS1-1 (ประเด็นที่ต้องการศึกษา) ",
-							sizeLimit: 10, closeTime: null
+							sizeLimit: 10, closeTime: "2023-02-15 09:45:00"
 						}, "IS1-2": {
 							name: "ใบงาน IS1-2 (การระบุปัญหา) ",
-							sizeLimit: 10, closeTime: null
+							sizeLimit: 10, closeTime: "2023-02-15 09:45:00"
 						}, "IS1-3": {
 							name: "ใบงาน IS1-3 (การระบุสมมติฐาน) ",
-							sizeLimit: 10, closeTime: null
+							sizeLimit: 10, closeTime: "2023-02-15 09:45:00"
 						}, "report-1": {
 							name: "เล่มรายงานโครงงานบทที่ 1 ",
-							sizeLimit: 20, closeTime: null
+							sizeLimit: 20, closeTime: "2023-02-15 09:45:00"
 						}, "report-2": {
 							name: "เล่มรายงานโครงงานบทที่ 2 ",
-							sizeLimit: 25, closeTime: null
+							sizeLimit: 25, closeTime: "2023-02-15 09:45:00"
 						}, "report-3": {
 							name: "เล่มรายงานโครงงานบทที่ 3 ",
-							sizeLimit: 25, closeTime: null
+							sizeLimit: 25, closeTime: "2023-02-15 09:45:00"
 						}, "report-4": {
 							name: "เล่มรายงานโครงงานบทที่ 4 ",
-							sizeLimit: 15, closeTime: null
+							sizeLimit: 15, closeTime: "2023-02-15 09:45:00"
 						}, "report-5": {
 							name: "เล่มรายงานโครงงานบทที่ 5 ",
-							sizeLimit: 20, closeTime: null
+							sizeLimit: 20, closeTime: "2023-02-15 09:45:00"
 						}, "report-all": {
 							name: "รวมเล่มรายงานโครงงาน (ฉบับเต็ม)",
-							sizeLimit: 50, closeTime: null
+							sizeLimit: 50, closeTime: "2023-02-15 09:45:00"
 						}, "abstract": {
 							name: "บทคัดย่อโครงงาน",
-							sizeLimit: 5, closeTime: null
+							sizeLimit: 5, closeTime: "2023-02-15 09:45:00"
 						}, "poster": {
 							name: "โปสเตอร์",
-							sizeLimit: 30, closeTime: null
+							sizeLimit: 30, closeTime: "2023-02-15 09:45:00"
 						}
 					}
 				}; var sv = {};
@@ -155,7 +155,9 @@
 				var checkTimeout = function() {
 					var lastCall = cv.fileDetail[cv.workType].closeTime;
 					if (lastCall != null && Date.now() > new Date(lastCall).getTime()) {
-						$('main h2 ~ *:not([style="display: none;"]').toggle("drop", function() { this.remove(); });
+						$('main h2 ~ *:not([style="display: none;"]')
+							.addClass("message red disabled")
+							.toggle("drop", function() { this.remove(); });
 						$('<div class="message red center" style="display: none;">ขณะนี้หมดเวลาส่งและแก้ไข'+cv.fileDetail[cv.workType].name+'แล้ว</message>')
 							.insertAfter("main .upload-icon")
 							.toggle("clip");
@@ -241,7 +243,7 @@
 								<span>ขนาดไฟล์</span>
 								<input type="text" data-name="size" readonly>
 							</div>
-							<button class="blue" onClick="return gsef.out()">อัปโหลด</button>
+							<button class="blue" onClick="return gsef.out()" disabled>อัปโหลด</button>
 						</div>
 					</form>
 					<div class="upload-icon" style="display: none;">
