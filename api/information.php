@@ -1,12 +1,12 @@
 <?php
-    $dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
-    require_once($dirPWroot."resource/php/extend/_RGI.php");
-    // Execute
+	$dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
+	require_once($dirPWroot."resource/php/extend/_RGI.php");
+	// Execute
 	$self = $_SESSION["auth"]["user"]; $year = $_SESSION["stif"]["t_year"]; $grade = $_SESSION["auth"]["info"]["grade"]; $room = $_SESSION["auth"]["info"]["room"];
 	$cond = "year=$year AND grade=$grade AND room=$room";
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else
-    switch ($type) {
-        case "group": {
+	switch ($type) {
+		case "group": {
 			switch ($command) {
 				case "title": {
 					# $code = escapeSQL($attr["code"]);
@@ -63,7 +63,7 @@
 				default: errorMessage(1, "Invalid command"); break;
 			}
 		} break;
-        case "person": {
+		case "person": {
 			switch ($command) {
 				case "student": {
 					$query = escapeSQL($attr);

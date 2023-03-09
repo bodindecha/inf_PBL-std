@@ -1,12 +1,12 @@
 <?php
-    $dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
-    require_once($dirPWroot."resource/php/extend/_RGI.php"); # require_once($dirPWroot."resource/php/core/reload_settings.php");
-    // Execute
+	$dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
+	require_once($dirPWroot."resource/php/extend/_RGI.php"); # require_once($dirPWroot."resource/php/core/reload_settings.php");
+	// Execute
 	$self = $_SESSION["auth"]["user"]; $year = $_SESSION["stif"]["t_year"]; $grade = $_SESSION["auth"]["info"]["grade"]; $room = $_SESSION["auth"]["info"]["room"];
 	$cond = "year=$year AND grade=$grade AND room=$room";
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else
-    switch ($type) {
-        case "get": {
+	switch ($type) {
+		case "get": {
 			switch ($command) {
 				case "personal": {
 					$get = $db -> query("SELECT code FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
@@ -21,18 +21,18 @@
 				} break;
 				case "fileLink": {
 					$fileCfg = array(
-						"mindmap"       => "Mindmap",
-						"IS1-1"         => "ใบงาน IS1-1",
-						"IS1-2"         => "ใบงาน IS1-2",
-						"IS1-3"         => "ใบงาน IS1-3",
-						"report-1"      => "รายงานโครงงานบทที่ 1",
-						"report-2"      => "รายงานโครงงานบทที่ 2",
-						"report-3"      => "รายงานโครงงานบทที่ 3",
-						"report-4"      => "รายงานโครงงานบทที่ 4",
-						"report-5"      => "รายงานโครงงานบทที่ 5",
-						"report-all"    => "รายงานฉบับสมบูรณ์",
-						"abstract"      => "Abstract",
-						"poster"        => "Poster"
+						"mindmap"		=> "Mindmap",
+						"IS1-1"			=> "ใบงาน IS1-1",
+						"IS1-2"			=> "ใบงาน IS1-2",
+						"IS1-3"			=> "ใบงาน IS1-3",
+						"report-1"		=> "รายงานโครงงานบทที่ 1",
+						"report-2"		=> "รายงานโครงงานบทที่ 2",
+						"report-3"		=> "รายงานโครงงานบทที่ 3",
+						"report-4"		=> "รายงานโครงงานบทที่ 4",
+						"report-5"		=> "รายงานโครงงานบทที่ 5",
+						"report-all"	=> "รายงานฉบับสมบูรณ์",
+						"abstract"		=> "Abstract",
+						"poster"		=> "Poster"
 					); $fileExts = array("png", "jpg", "jpeg", "heic", "heif", "gif", "pdf");
 					// Fetch data
 					$filePos = array_search($attr, array_keys($fileCfg));
@@ -59,7 +59,7 @@
 				default: errorMessage(1, "Invalid command"); break;
 			}
 		} break;
-        case "work": {
+		case "work": {
 			switch ($command) {
 				case "deadline": {
 					$get = $db -> query("SELECT name,value FROM config_sep WHERE name LIKE 'PBL-dd_%' ORDER BY name");

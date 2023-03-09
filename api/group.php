@@ -1,12 +1,12 @@
 <?php
-    $dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
-    require_once($dirPWroot."resource/php/extend/_RGI.php");
-    // Execute
+	$dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
+	require_once($dirPWroot."resource/php/extend/_RGI.php");
+	// Execute
 	$self = $_SESSION["auth"]["user"]; $year = $_SESSION["stif"]["t_year"]; $grade = $_SESSION["auth"]["info"]["grade"]; $room = $_SESSION["auth"]["info"]["room"];
 	$cond = "year=$year AND grade=$grade AND room=$room";
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else
-    switch ($type) {
-        case "create": {
+	switch ($type) {
+		case "create": {
 			// Check requirements
 			if (intval($grade) > 6) {
 				errorMessage(3, "Unable to create group. Please try again.");
@@ -55,7 +55,7 @@
 				}
 			}
 		} break;
-        case "join": {
+		case "join": {
 			// Check if isGrouped
 			$get = $db -> query("SELECT code FROM PBL_group WHERE $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7) AND year=$year");
 			if (!$get) errorMessage(3, "Error loading your data. Please try again.");
@@ -118,7 +118,7 @@
 									slog("PBL", "join", "group", $code, "fail", "", "NotEmpty");
 			} } } } } }
 		} break;
-        case "update": {
+		case "update": {
 			switch ($command) {
 				case "information": {
 					# $code = escapeSQL($attr["code"]);
@@ -191,7 +191,7 @@
 				default: errorMessage(1, "Invalid command"); break;
 			}
 		} break;
-        case "delete": {
+		case "delete": {
 			switch ($command) {
 				case "member": {
 					# $code = escapeSQL($attr["code"]);

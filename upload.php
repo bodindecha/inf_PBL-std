@@ -1,5 +1,5 @@
 <?php
-    $dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
+	$dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
 	require($dirPWroot."resource/hpe/init_ps.php");
 	$header_title = "IS & PBL (Upload) - Student";
 	$header_desc = "ระบบบริหารโครงงาน PBL: อัปโหลดไฟล์งาน";
