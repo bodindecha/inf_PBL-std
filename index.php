@@ -1,5 +1,5 @@
 <?php
-	$dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
+	$dirPWroot = str_repeat("../", substr_count($_SERVER["PHP_SELF"], "/")-1);
 	require($dirPWroot."resource/hpe/init_ps.php");
 	$header_title = "IS & PBL - Student";
 	$header_desc = "ระบบจัดการโครงงาน IS และ PBL";
@@ -58,7 +58,7 @@
 			$(document).ready(function() {
 				PBL.init();
 			});
-			top.USER = "<?=$_SESSION['auth']['user']?>";
+			top.USER = "<?=$_SESSION["auth"]["user"]?>";
 			const pUI = {
 				select: {
 					advisor: function(no) {
@@ -73,7 +73,7 @@
 					}
 				}, show: {
 					ungrouped: function() {
-						app.ui.lightbox.open("top", {title: "เพื่อนที่ยังไม่มีกลุ่ม", allowclose: true, html: '<iframe src="/resource/php/std-list?mode=PBL_no-group&grade=<?=$_SESSION['auth']['info']['grade']?>&room=<?=$_SESSION['auth']['info']['room']?>" style="width:90vw;height:80vh;border:none">Loading...</iframe>'});
+						app.ui.lightbox.open("top", {title: "เพื่อนที่ยังไม่มีกลุ่ม", allowclose: true, html: '<iframe src="/resource/php/std-list?mode=PBL_no-group&grade=<?=$_SESSION["auth"]["info"]["grade"]?>&room=<?=$_SESSION["auth"]["info"]["room"]?>" style="width:90vw;height:80vh;border:none">Loading...</iframe>'});
 					}, code: function() {
 						var button = $('main .page[path="group/members"] .action button:nth-child(1)');
 						if ($('main .page[path="group/members"] .code .expand').toggleClass("emphasize").is(".emphasize")) {

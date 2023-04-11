@@ -1,5 +1,5 @@
 <?php
-	$dirPWroot = str_repeat("../", substr_count($_SERVER['PHP_SELF'], "/")-1);
+	$dirPWroot = str_repeat("../", substr_count($_SERVER["PHP_SELF"], "/")-1);
 	require_once($dirPWroot."resource/php/core/config.php");
 ?>
 <!--  -->
@@ -46,7 +46,7 @@
 					<tr>
 						<td>สาขาโครงงาน</td>
 						<td><select name="type">
-							<?php foreach (str_split(" ABCDEFGHIJKLM") as $et) echo '<option value="'.$et.'">'.pblcode2text($et)[$_COOKIE['set_lang']].'</option>'; ?>
+							<?php foreach (str_split(" ABCDEFGHIJKLM") as $et) echo '<option value="'.$et.'">'.pblcode2text($et)[$_COOKIE["set_lang"]].'</option>'; ?>
 						</select></td>
 					</tr>
 				</tbody></table>
@@ -99,7 +99,7 @@
 					<tr>
 						<td>สาขาโครงงาน</td>
 						<td><select name="type">
-							<?php foreach (str_split(" ABCDEFGHIJKLM") as $et) echo '<option value="'.$et.'">'.pblcode2text($et)[$_COOKIE['set_lang']].'</option>'; ?>
+							<?php foreach (str_split(" ABCDEFGHIJKLM") as $et) echo '<option value="'.$et.'">'.pblcode2text($et)[$_COOKIE["set_lang"]].'</option>'; ?>
 						</select></td>
 					</tr>
 				</tbody></table>
