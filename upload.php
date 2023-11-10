@@ -7,6 +7,8 @@
 	
 	$upload_success = $_SESSION["var"]["PBL-upload-status"] ?? false;
 	if ($upload_success) unset($_SESSION["var"]["PBL-upload-status"]);
+
+	$year = $_SESSION["stif"]["t_year"];
 ?>
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -80,51 +82,87 @@
 					foreach ($_SESSION["var"]["PBL-message-upload"] as $msg)
 						echo 'app.ui.notify(1, ['.$msg[0].', "'.$msg[1].'"]);';
 					unset($_SESSION["var"]["PBL-message-upload"]);
-				}
+				} if ($upload_success) echo 'top.PBL.save.file("complete");'; else {
 			?>
-			<?php if ($upload_success) echo 'top.PBL.save.file("complete");'; else { ?>
 			const gsef = (function() {
 				if (typeof top.PBL === "undefined") top.PBL = {uploadType: () => "mindmap"};
 				var cv = {
 					API_URL: "/s/PBL/v2/api/",
 					workType: top.PBL.uploadType(),
+					year: "<?=$year?>",
 					fileDetail: {
 						"mindmap": {
 							name: "แผนผังความคิดบูรณาการ 8 กลุ่มสาระการเรียนรู้",
-							sizeLimit: 5, closeTime: "2022-09-14 23:59:59"
+							sizeLimit: 5, closeTime: {
+								2565: "2022-09-14 23:59:59",
+								2566: null
+							}
 						}, "IS1-1": {
 							name: "ใบงาน IS1-1 (ประเด็นที่ต้องการศึกษา) ",
-							sizeLimit: 10, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 10, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "IS1-2": {
 							name: "ใบงาน IS1-2 (การระบุปัญหา) ",
-							sizeLimit: 10, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 10, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "IS1-3": {
 							name: "ใบงาน IS1-3 (การระบุสมมติฐาน) ",
-							sizeLimit: 10, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 10, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "report-1": {
 							name: "เล่มรายงานโครงงานบทที่ 1 ",
-							sizeLimit: 20, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 20, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "report-2": {
 							name: "เล่มรายงานโครงงานบทที่ 2 ",
-							sizeLimit: 25, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 25, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "report-3": {
 							name: "เล่มรายงานโครงงานบทที่ 3 ",
-							sizeLimit: 25, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 25, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "report-4": {
 							name: "เล่มรายงานโครงงานบทที่ 4 ",
-							sizeLimit: 15, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 15, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "report-5": {
 							name: "เล่มรายงานโครงงานบทที่ 5 ",
-							sizeLimit: 20, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 20, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "report-all": {
 							name: "รวมเล่มรายงานโครงงาน (ฉบับเต็ม)",
-							sizeLimit: 50, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 50, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "abstract": {
 							name: "บทคัดย่อโครงงาน",
-							sizeLimit: 5, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 5, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}, "poster": {
 							name: "โปสเตอร์",
-							sizeLimit: 30, closeTime: "2023-02-15 09:45:00"
+							sizeLimit: 30, closeTime: {
+								2565: "2023-02-15 09:45:00",
+								2566: null
+							}
 						}
 					}
 				}; var sv = {};
@@ -153,7 +191,7 @@
 					});
 				};
 				var checkTimeout = function() {
-					var lastCall = cv.fileDetail[cv.workType].closeTime;
+					var lastCall = cv.fileDetail[cv.workType].closeTime[cv.year];
 					if (lastCall != null && Date.now() > new Date(lastCall).getTime()) {
 						$('main h2 ~ *:not([style="display: none;"]')
 							.addClass("message red disabled")
@@ -243,7 +281,7 @@
 								<span>ขนาดไฟล์</span>
 								<input type="text" data-name="size" readonly>
 							</div>
-							<button class="blue" onClick="return gsef.out()" disabled>อัปโหลด</button>
+							<button class="blue" onClick="return gsef.out()">อัปโหลด</button>
 						</div>
 					</form>
 					<div class="upload-icon" style="display: none;">

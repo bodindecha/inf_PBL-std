@@ -118,12 +118,12 @@
 			<div class="expand">
 				<output name="gjc" data-title="โค้ดเข้ากลุ่ม"></output>
 			</div>
-			<div class="action form"><div class="group spread"><div class="group">
+			<div class="action form"><div class="group center">
 				<button onClick="pUI.show.code()" class="gray icon" data-title="ขยายโค้ด"><i class="material-icons">fullscreen</i></button>
 				<button onClick="pUI.copy('code')" class="blue icon" data-title="คัดลอกโค้ด"><i class="material-icons">content_copy</i></button>
 				<button onClick="pUI.copy('link')" class="blue icon" data-title="คัดลอกลิงก์"><i class="material-icons">link</i></button>
 				<button onClick="pUI.show.QRcode()" class="cyan icon" data-title="แสดงคิดอาร์โค้ด"><i class="material-icons">qr_code</i></button>
-			</div></div></div>
+			</div></div>
 		</div>
 		<p class="title-btn">สมาชิกกลุ่ม <button></button></p>
 		<table class="list form slider">

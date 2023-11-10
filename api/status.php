@@ -62,7 +62,7 @@
 		case "work": {
 			switch ($command) {
 				case "deadline": {
-					$get = $db -> query("SELECT name,value FROM config_sep WHERE name LIKE 'PBL-dd_%' ORDER BY name");
+					$get = $db -> query("SELECT name,value FROM config_sep WHERE name LIKE 'PBL-dd_%' AND year=$year ORDER BY name");
 					if (!$get) errorMessage(3, "Error loading your data.");
 					else {
 						function date2thai($date) {
@@ -73,6 +73,10 @@
 							$readable = (empty($read["value"]) ? "ยังไม่กำหนดวัน" : date2thai($read["value"]));
 							$comparable = (empty($read["value"]) ? date("Y-m-d H:i:s", strtotime("+1 year")) : $read["value"]." 23:59:59");
 							$data[substr($read["name"], 7)] = array($readable, $comparable);
+						} // Fill up NULL cases
+						foreach (str_split("ABCDEFG") as $name) {
+							if (isset($data[$name])) continue;
+							$data[$name] = array("ยังไม่กำหนดวัน", date("Y-m-d H:i:s", strtotime("+1 year")));
 						} successState($data);
 					}
 				} break;
