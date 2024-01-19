@@ -172,7 +172,7 @@
 					b2mb = B => B/1024000;
 				var initialize = function() {
 					if (self == top) location = "/error/902";
-					else if (cv.workType == "") {
+					else if (cv.workType == "" || !(cv.workType in cv.fileDetail)) {
 						app.ui.notify(1, [3, "Error: No such file type. Please try again."])
 						top.app.ui.lightbox.close();
 					} else {
@@ -180,6 +180,7 @@
 						$('main output[name="sizeLimit"]').val(cv.fileDetail[cv.workType].sizeLimit);
 						checkSubmitted();
 						checkTimeout();
+						if (cv.workType == "report-all") $('<center class="message yellow">หากนักเรียน<u>ส่งหรือแก้ไขไฟล์</u>'+cv.fileDetail[cv.workType].name+' <u>หลังเวลากำหนดส่ง</u><br>นักเรียนจะได้รับผลประเมินเป็น<u>ไม่ผ่าน</u>ทันที (ได้คะแนน ⅔ ในส่วนของเล่มรายงาน)</center>').insertAfter("main h2:first-child");
 					}
 				};
 				var checkSubmitted = function() {

@@ -5,6 +5,8 @@
 	$header_desc = "ระบบจัดการโครงงาน IS และ PBL";
 	$home_menu = "is-pbl";
 	$forceExternalBrowser = true;
+
+	if (!isset($_SESSION["auth"]["user"])) { header("Location: /$my_url"); exit(0); }
 ?>
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
