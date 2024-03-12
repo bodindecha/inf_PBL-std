@@ -93,75 +93,75 @@
 					fileDetail: {
 						"mindmap": {
 							name: "แผนผังความคิดบูรณาการ 8 กลุ่มสาระการเรียนรู้",
-							sizeLimit: 5, closeTime: {
+							sizeLimit: 2.5, closeTime: {
 								2565: "2022-09-14 23:59:59",
 								2566: null
 							}
 						}, "IS1-1": {
 							name: "ใบงาน IS1-1 (ประเด็นที่ต้องการศึกษา) ",
-							sizeLimit: 10, closeTime: {
+							sizeLimit: 5, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "IS1-2": {
 							name: "ใบงาน IS1-2 (การระบุปัญหา) ",
-							sizeLimit: 10, closeTime: {
+							sizeLimit: 5, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "IS1-3": {
 							name: "ใบงาน IS1-3 (การระบุสมมติฐาน) ",
-							sizeLimit: 10, closeTime: {
+							sizeLimit: 5, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "report-1": {
 							name: "เล่มรายงานโครงงานบทที่ 1 ",
-							sizeLimit: 20, closeTime: {
+							sizeLimit: 5, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "report-2": {
 							name: "เล่มรายงานโครงงานบทที่ 2 ",
-							sizeLimit: 25, closeTime: {
+							sizeLimit: 10, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "report-3": {
 							name: "เล่มรายงานโครงงานบทที่ 3 ",
-							sizeLimit: 25, closeTime: {
+							sizeLimit: 15, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "report-4": {
 							name: "เล่มรายงานโครงงานบทที่ 4 ",
-							sizeLimit: 15, closeTime: {
+							sizeLimit: 10, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "report-5": {
 							name: "เล่มรายงานโครงงานบทที่ 5 ",
-							sizeLimit: 20, closeTime: {
+							sizeLimit: 5, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "report-all": {
 							name: "รวมเล่มรายงานโครงงาน (ฉบับเต็ม)",
-							sizeLimit: 50, closeTime: {
+							sizeLimit: 30, closeTime: {
 								2565: "2023-02-15 09:45:00",
-								2566: null
+								2566: "2024-02-02 12:00:00"
 							}
 						}, "abstract": {
 							name: "บทคัดย่อโครงงาน",
-							sizeLimit: 5, closeTime: {
+							sizeLimit: 2.5, closeTime: {
 								2565: "2023-02-15 09:45:00",
 								2566: null
 							}
 						}, "poster": {
 							name: "โปสเตอร์",
-							sizeLimit: 30, closeTime: {
+							sizeLimit: 15, closeTime: {
 								2565: "2023-02-15 09:45:00",
-								2566: null
+								2566: "2024-02-02 12:00:00"
 							}
 						}
 					}
