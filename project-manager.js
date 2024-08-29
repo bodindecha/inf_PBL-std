@@ -347,10 +347,10 @@ const PBL = (function(d) {
 					adv3: $('main .page[path="group/new"] [name="adv3"]').val(),
 					type: $('main .page[path="group/new"] [name="type"]').val()
 				};
-				if (data.nameth.length && !/^[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameth)) {
+				if (data.nameth.length && !AppConfig["PBL"].REGEX.projNameTH.test(data.nameth)) {
 					app.ui.notify(1, [2, "Invalid Thai project name."]);
 					$('main .page[path="group/new"] [name="nameth"]').focus();
-				} else if (data.nameen.length && !/^[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameen)) {
+				} else if (data.nameen.length && !AppConfig["PBL"].REGEX.projNameEN.test(data.nameen)) {
 					app.ui.notify(1, [2, "Invalid English project name."]);
 					$('main .page[path="group/new"] [name="nameen"]').focus();
 				} else if (!" ABCDEFGHIJKLM".includes(data.type)) {
@@ -489,10 +489,10 @@ const PBL = (function(d) {
 				adv3: $('main .page[path="group/information"] [name="adv3"]').val(),
 				type: $('main .page[path="group/information"] [name="type"]').val()
 			};
-			if (data.nameth.length && !/^[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameth)) {
+			if (data.nameth.length && !AppConfig["PBL"].REGEX.projNameTH.test(data.nameth)) {
 				app.ui.notify(1, [2, "Invalid Thai project name."]);
 				$('main .page[path="group/information"] [name="nameth"]').focus();
-			} else if (data.nameen.length && !/^[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}$/.test(data.nameen)) {
+			} else if (data.nameen.length && !AppConfig["PBL"].REGEX.projNameEN.test(data.nameen)) {
 				app.ui.notify(1, [2, "Invalid English project name."]);
 				$('main .page[path="group/information"] [name="nameen"]').focus();
 			} else if (!" ABCDEFGHIJKLM".includes(data.type)) {

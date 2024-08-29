@@ -8,7 +8,7 @@
 	switch ($type) {
 		case "create": {
 			// Check requirements
-			if (intval($grade) > 6 || intval($room) > 17) {
+			if (intval($grade) > 6 || intval($room) > 19) {
 				errorMessage(3, "Unable to create group. Please try again.");
 				slog("PBL", "new", "group", "", "fail", "", "NotEligible");
 			} else {
@@ -212,15 +212,23 @@
 						} else {
 							$success = $db -> query("UPDATE PBL_group SET mbr2=(CASE mbr2 WHEN $mbr THEN NULL ELSE mbr2 END),mbr3=(CASE mbr3 WHEN $mbr THEN NULL ELSE mbr3 END),mbr4=(CASE mbr4 WHEN $mbr THEN NULL ELSE mbr4 END),mbr5=(CASE mbr5 WHEN $mbr THEN NULL ELSE mbr5 END),mbr6=(CASE mbr6 WHEN $mbr THEN NULL ELSE mbr6 END),mbr7=(CASE mbr7 WHEN $mbr THEN NULL ELSE mbr7 END) WHERE code='$code'");
 							if ($success) {
-								successState(array("message" => array(
-									array(0, "Member removed successfully"),
-								))); if ($mbr <> $self) slog("PBL", "del", "member", "$code -> $mbr", "pass");
-								else slog("PBL", "exit", "group", $code, "pass");
+								if ($mbr <> $self) {
+									successState(array("message" => array(
+										array(0, "Member $mbr removed successfully"),
+									))); slog("PBL", "del", "member", "$code -> $mbr", "pass");
+								} else {
+									successState();
+									slog("PBL", "exit", "group", $code, "pass");
+								}
 							}
 							else {
-								errorMessage(3, "Unable to remove $mbr from your group. Please try again.");
-								if ($mbr <> $self) slog("PBL", "del", "member", "$code -> $mbr", "fail", "", "InvalidQuery");
-								else slog("PBL", "exit", "group", $code, "fail", "", "InvalidQuery");
+								if ($mbr <> $self) {
+									errorMessage(3, "Unable to remove $mbr from your group. Please try again.");
+									slog("PBL", "del", "member", "$code -> $mbr", "fail", "", "InvalidQuery");
+								} else {
+									errorMessage(3, "Unable to leave group. Please try again.");
+									slog("PBL", "exit", "group", $code, "fail", "", "InvalidQuery");
+								}
 							}
 						}
 					}

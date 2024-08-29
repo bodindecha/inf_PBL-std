@@ -25,11 +25,11 @@
 				<table class="group-info"><tbody>
 					<tr>
 						<td>ชื่อโครงงานภาษาไทย</td>
-						<td><input name="nameth" type="text" maxlength="150" pattern="[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}"></td>
+						<td><input name="nameth" type="text" maxlength="<?=$APP_CONST["PBL"]["lenLim"]["nameth"]?>" pattern="<?=$APP_CONST["PBL"]["REGEX"]["projNameTH"]?>"></td>
 					</tr>
 					<tr>
 						<td>ชื่อโครงงานภาษาอังกฤษ</td>
-						<td><input name="nameen" type="text" maxlength="150" pattern="[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}"></td>
+						<td><input name="nameen" type="text" maxlength="<?=$APP_CONST["PBL"]["lenLim"]["nameen"]?>" pattern="<?=$APP_CONST["PBL"]["REGEX"]["projNameEN"]?>"></td>
 					</tr>
 					<tr>
 						<td>ครูที่ปรึกษา 1</td>
@@ -78,11 +78,11 @@
 				<table class="group-info"><tbody>
 					<tr>
 						<td>ชื่อโครงงานภาษาไทย</td>
-						<td><input name="nameth" type="text" maxlength="150" pattern="[ก-๛0-9A-Za-z ()[\]{}\-!@#$%.,/&*+_?|]{3,150}"></td>
+						<td><input name="nameth" type="text" maxlength="<?=$APP_CONST["PBL"]["lenLim"]["nameth"]?>" pattern="<?=$APP_CONST["PBL"]["REGEX"]["projNameTH"]?>"></td>
 					</tr>
 					<tr>
 						<td>ชื่อโครงงานภาษาอังกฤษ</td>
-						<td><input name="nameen" type="text" maxlength="150" pattern="[A-Za-z0-9ก-๛ ()[\]{}\-!@#$%.,/&*+_?|]{3,150}"></td>
+						<td><input name="nameen" type="text" maxlength="<?=$APP_CONST["PBL"]["lenLim"]["nameen"]?>" pattern="<?=$APP_CONST["PBL"]["REGEX"]["projNameEN"]?>"></td>
 					</tr>
 					<tr>
 						<td>ครูที่ปรึกษา 1</td>
