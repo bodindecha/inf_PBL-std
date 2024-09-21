@@ -9,12 +9,14 @@
 		case "get": {
 			switch ($command) {
 				case "personal": {
-					$get = $db -> query("SELECT code FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
+					$get = $db -> query("SELECT code,grade FROM PBL_group WHERE year=$year AND $self IN(mbr1,mbr2,mbr3,mbr4,mbr5,mbr6,mbr7)");
 					if (!$get) errorMessage(3, "Error loading your data.");
 					else {
 						$data = array("isGrouped" => boolval($get -> num_rows));
+						$read = $get -> fetch_array(MYSQLI_ASSOC);
+						$grade = (int)$read["grade"];
 						if ($data["isGrouped"]) {
-							$data["code"] = ($get -> fetch_array(MYSQLI_ASSOC))["code"];
+							$data["code"] = $read["code"];
 							$data["requireIS"] = ($grade == 2 || $grade == 4);
 						} successState($data);
 					}
