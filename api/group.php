@@ -4,11 +4,15 @@
 	// Execute
 	$self = $_SESSION["auth"]["user"]; $year = $_SESSION["stif"]["t_year"]; $grade = $_SESSION["auth"]["info"]["grade"]; $room = $_SESSION["auth"]["info"]["room"];
 	$cond = "year=$year AND grade=$grade AND room=$room";
+	$noGroupChange = "12-10";
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else
 	switch ($type) {
 		case "create": {
 			// Check requirements
-			if (intval($grade) > 6 || intval($room) > 19) {
+			if ($_SESSION["stif"]["t_sem"] == 2 && (date("m-d") > $noGroupChange || date("m-d") < "03-01")) {
+				errorMessage(1, "You cannot create group at this time. Please contact the director of IS & PBL.");
+				slog("PBL", "new", "group", "", "fail", "", "Timeout");
+			} else if (intval($grade) > 6 || intval($room) > 19) {
 				errorMessage(3, "Unable to create group. Please try again.");
 				slog("PBL", "new", "group", "", "fail", "", "NotEligible");
 			} else {
@@ -70,6 +74,9 @@
 					"message" => array(array(1, "You can't join a group while you're already in a group."))
 				); successState($data);
 				slog("PBL", "join", "group", $data["code"], "fail", "", "Existed");
+			} else if ($_SESSION["stif"]["t_sem"] == 2 && (date("m-d") > $noGroupChange || date("m-d") < "03-01")) {
+				errorMessage(1, "You cannot join group at this time. Please contact the director of IS & PBL.");
+				slog("PBL", "join", "group", $code, "fail", "", "Timeout");
 			} else { // Join group
 				$code = escapeSQL($attr);
 				if (!preg_match("/^[A-Z0-9]{6}$/", $attr)) {
@@ -277,10 +284,9 @@
 										}
 									} */
 									for ($fIdx = 0; $fIdx <= count($fileCfg); $fIdx++) {
-										if ($status[$fIdx]) {
-											$location = $dirPWroot."resource/upload/PBL/$year/".$fileCfg[$fIdx]."/$grade/$code.".$fileType[$fIdx];
-											if (file_exists($location)) unlink($location);
-										}
+										if (!$status[$fIdx]) continue;
+										$location = $dirPWroot."resource/upload/PBL/$year/".$fileCfg[$fIdx]."/$grade/$code.".$fileType[$fIdx];
+										if (file_exists($location)) unlink($location);
 									}
 								} successState(array("isGrouped" => false, "message" => array(
 									array(0, "Your group is now deleted.")
