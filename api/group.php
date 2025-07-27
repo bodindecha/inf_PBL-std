@@ -2,7 +2,10 @@
 	$dirPWroot = str_repeat("../", substr_count($_SERVER["PHP_SELF"], "/")-1);
 	require_once($dirPWroot."resource/php/extend/_RGI.php");
 	// Execute
-	$self = $_SESSION["auth"]["user"]; $year = $_SESSION["stif"]["t_year"]; $grade = $_SESSION["auth"]["info"]["grade"]; $room = $_SESSION["auth"]["info"]["room"];
+	$self = $_SESSION["auth"]["user"] ?? null;
+	$year = $_SESSION["stif"]["t_year"] ?? null;
+	$grade = $_SESSION["auth"]["info"]["grade"] ?? null;
+	$room = $_SESSION["auth"]["info"]["room"] ?? null;
 	$cond = "year=$year AND grade=$grade AND room=$room";
 	$noGroupChange = "12-10";
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else

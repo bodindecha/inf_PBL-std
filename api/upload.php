@@ -28,7 +28,10 @@
 		"poster"		=> 30
 	); $fileExts = array("png", "jpg", "jpeg", "heic", "heif", "gif", "pdf");
 	// Variables
-	$self = $_SESSION["auth"]["user"]; $year = $_SESSION["stif"]["t_year"]; $grade = $_SESSION["auth"]["info"]["grade"]; $room = $_SESSION["auth"]["info"]["room"];
+	$self = $_SESSION["auth"]["user"] ?? null;
+	$year = $_SESSION["stif"]["t_year"];
+	$grade = $_SESSION["auth"]["info"]["grade"] ?? null;
+	$room = $_SESSION["auth"]["info"]["room"] ?? null;
 	$cond = "year=$year AND grade=$grade AND room=$room";
 	$file = escapeSQL($_REQUEST["filePart"]); $filePos = array_search($file, array_keys($fileCfg));
 	// Execute
