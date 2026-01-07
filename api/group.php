@@ -7,12 +7,12 @@
 	$grade = $_SESSION["auth"]["info"]["grade"] ?? null;
 	$room = $_SESSION["auth"]["info"]["room"] ?? null;
 	$cond = "year=$year AND grade=$grade AND room=$room";
-	$noGroupChange = "12-10";
+	$noGroupChange = $_SESSION["stif"]["t_sem"] == 2 && (date("m-d") > "12-10" || date("m-d") < "05-01");
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else
 	switch ($type) {
 		case "create": {
 			// Check requirements
-			if ($_SESSION["stif"]["t_sem"] == 2 && (date("m-d") > $noGroupChange || date("m-d") < "03-01")) {
+			if ($noGroupChange) {
 				errorMessage(1, "You cannot create group at this time. Please contact the director of IS & PBL.");
 				slog("PBL", "new", "group", "", "fail", "", "Timeout");
 			} else if (intval($grade) > 6 || intval($room) > 19) {
@@ -77,7 +77,7 @@
 					"message" => array(array(1, "You can't join a group while you're already in a group."))
 				); successState($data);
 				slog("PBL", "join", "group", $data["code"], "fail", "", "Existed");
-			} else if ($_SESSION["stif"]["t_sem"] == 2 && (date("m-d") > $noGroupChange || date("m-d") < "03-01")) {
+			} else if ($noGroupChange) {
 				errorMessage(1, "You cannot join group at this time. Please contact the director of IS & PBL.");
 				slog("PBL", "join", "group", $code, "fail", "", "Timeout");
 			} else { // Join group
@@ -156,11 +156,16 @@
 							errorMessage(1, "โครงงาน \"$readPlag[nameth]\" ($readPlag[nameen]) ได้มีการทำขึ้นแล้วในปีการศึกษา $readPlag[year] (รหัสโครงงาน $readPlag[code]). กรุณาเลือกชื่อโครงงานอื่น");
 							slog("PBL", "edit", "info", $code, "fail", "", "Duplicate");
 						} else { // Update information
-							$success = $db -> query("UPDATE PBL_group SET nameth='$nameth',nameen='$nameen',type='$type',adv1=$adv1,adv2=$adv2,adv3=$adv3 WHERE code='$code'");
+							$gettimeout = $db -> query("SELECT value FROM config_sep WHERE year=$YEAR AND name='PBL-dd_F'");
+							$readtimeout = (!$gettimeout || !$gettimeout -> num_rows) ? "" : ($gettimeout -> fetch_array(MYSQLI_ASSOC))["value"];
+							$timedout = strlen($readtimeout) && time() > strtotime($readtimeout);
+							$type = $timedout ? "" : ",type='$type'";
+							$success = $db -> query("UPDATE PBL_group SET nameth='$nameth',nameen='$nameen'$type,adv1=$adv1,adv2=$adv2,adv3=$adv3 WHERE code='$code'");
 							if ($success) {
-								successState(array("message" => array(
-									array(0, "New group information is saved."),
-								))); slog("PBL", "edit", "info", $code, "pass");
+								$messages = [[0, "New group information is saved."]];
+								if ($timedout) array_push($messages, [1, "Project branch cannot be changed after the deadline."]);
+								successState(array("message" => $messages));
+								slog("PBL", "edit", "info", $code, "pass");
 							} else {
 								errorMessage(3, "Unable update group information. Please try again.");
 								slog("PBL", "edit", "info", $code, "fail", "", "InvalidQuery");
