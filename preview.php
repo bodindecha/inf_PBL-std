@@ -45,5 +45,6 @@
 			} else $redirect = "/error/900";
 		}
 	} $db -> close();
+	if (str_starts_with($redirect, "/error/")) $redirect .= "#ref=".urlencode($_SERVER["REQUEST_URI"]);
 	header("Location: $redirect"); exit(0);
 ?>
