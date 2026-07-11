@@ -156,7 +156,7 @@
 							errorMessage(1, "โครงงาน \"$readPlag[nameth]\" ($readPlag[nameen]) ได้มีการทำขึ้นแล้วในปีการศึกษา $readPlag[year] (รหัสโครงงาน $readPlag[code]). กรุณาเลือกชื่อโครงงานอื่น");
 							slog("PBL", "edit", "info", $code, "fail", "", "Duplicate");
 						} else { // Update information
-							$gettimeout = $db -> query("SELECT value FROM config_sep WHERE year=$YEAR AND name='PBL-dd_F'");
+							$gettimeout = $db -> query("SELECT value FROM config_sep WHERE year=$year AND name='PBL-dd_F'");
 							$readtimeout = (!$gettimeout || !$gettimeout -> num_rows) ? "" : ($gettimeout -> fetch_array(MYSQLI_ASSOC))["value"];
 							$timedout = strlen($readtimeout) && time() > strtotime($readtimeout);
 							$type = $timedout ? "" : ",type='$type'";
