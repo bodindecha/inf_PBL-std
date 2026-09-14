@@ -7,7 +7,7 @@
 	$grade = $_SESSION["auth"]["info"]["grade"] ?? null;
 	$room = $_SESSION["auth"]["info"]["room"] ?? null;
 	$cond = "year=$year AND grade=$grade AND room=$room";
-	$noGroupChange = $_SESSION["stif"]["t_sem"] == 2 && (date("m-d") > "12-10" || date("m-d") < "05-01");
+	$noGroupChange = $_SESSION["stif"]["t_sem"] == 2 && (date("m-d") >= "12-21" || date("m-d") < "05-01");
 	if (empty($self)) errorMessage(3, "You are not signed-in. Please reload and try again."); else
 	switch ($type) {
 		case "create": {
